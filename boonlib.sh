@@ -4,7 +4,7 @@
 #
 #  BOONLIB - Boonleng's BASH library
 #  This is a collection of shell script functions for
-#  convenient / lazy coding.
+#  convenient / lazy coding. Tasks that I frequently do.
 #
 #  Boon Leng Cheong
 #
@@ -20,6 +20,7 @@
 #
 ##########################################################
 function log() {
+	if [ -z "$1" ]; then return; fi
 	if [ -z "$LOGFILE" ]; then
 		LOGFILE="$HOME/boonlib.log"
 		log $1
@@ -27,7 +28,8 @@ function log() {
 		return
 	fi
 	log_dir=${LOGFILE%/*}
-	if [[ $log_dir != $LOGFILE && ! -z "$log_dir" &&  ! -d "$log_dir" ]]; then
+	if [ "$log_dir" == "$LOGFILE" ]; then log_dir=""; fi
+	if [[ ! -z "$log_dir" &&  ! -d "$log_dir" ]]; then
 		mkdir -p $log_dir;
 	fi
 	if [[ ! -z "$DEBUG" && "$DEBUG" == "1" ]]; then
@@ -54,7 +56,8 @@ function slog() {
 		return
 	fi
 	log_dir=${LOGFILE%/*}
-	if [[ $log_dir != $LOGFILE && ! -z "$log_dir" &&  ! -d "$log_dir" ]]; then
+	if [ "$log_dir" == "$LOGFILE" ]; then log_dir=""; fi
+	if [[ ! -z "$log_dir" &&  ! -d "$log_dir" ]]; then
 		mkdir -p $log_dir;
 	fi
 	if [[ ! -z "$DEBUG" && "$DEBUG" == "1" ]]; then
@@ -132,7 +135,8 @@ function file_manager() {
 		log "Target free > `num2str3 $((target_space/1024/1024))` MB"
 		# NOTE: df returns free space in 1K blocks
 		# Example, 1TB = 1024 GB = 1024*1024*1024 K-blocks
-		current=`df $target_path | tail -1 | awk {'print $4'}`
+		#current=`df $target_path | tail -1 | awk {'print $4'}`
+		current=`df $target_path | tail -1 | awk '{printf $(NF-2)}'`
 	elif [ "$method" == "LIMIT" ]; then
 		log "Target limit < `num2str3 $((target_space/1024/1024))` MB"
 		# NOTE: du returns free space in 1K blocks
@@ -157,16 +161,12 @@ function file_manager() {
 	log "Current: `num2str3 $((current/1024))` MB $ineq `num2str3 $((target_space/1024))` MB"
 	num=0;
 	# Get size to be in 1K-block
-	find $target_path -maxdepth 3 -type f -print | sort | while read line; do
-		# file=${line%%,*}
-		# size=${line##*,}
-		file=$line
-		# file size in 512 block
-		size=`ls -s $file | awk {'print $1'}`
-		# file size in 1K-block
-		size=$((size/2))
+	find -L $target_path -maxdepth 3 -type f -printf '%p,%k\n' | sort | while read line; do
+		file=${line%%,*}
+		size=${line##*,}
 		if [[ "$method" == "FREE" && "$current" -gt "$target_space" ]] || 
 		   [[ "$method" == "LIMIT" && "$current" -lt "$target_space" ]]; then
+			# At this point the condition is met
 			if [ "$num" -gt 0 ]; then
 				log "Erased $num file(s)"
 				if [ "$method" == "FREE" ]; then
@@ -175,7 +175,7 @@ function file_manager() {
 					log "Actual free space: `num2str3 $((current/1024))` MB"
 				else
 					log "Estimated usage: `num2str3 $((current/1024))` MB"
-					current=`du -ks $target_path | awk {'print $1'}`
+					current=`du -ks $target_path/ | awk {'print $1'}`
 					log "Actual usage: `num2str3 $((current/1024))` MB"
 				fi
 				if [[ "$method" == "FREE" && "$current" -lt "$((target_space-tolerance))" ]] || 
@@ -192,14 +192,14 @@ function file_manager() {
 			break
 		else
 			num=$((num+1))
-			cmd="nice -n 10 rm -f $file"
-			if [ "$method" == "$FREE" ]; then
+			cmd="nice -n 20 rm -f $file"
+			if [ "$method" == "FREE" ]; then
 				current=$((current+size))
 			else
 				current=$((current-size))
 			fi
 			eval $cmd
-			log $cmd
+			log $cmd,$current
 		fi
 	done
 }
@@ -218,7 +218,7 @@ function remove_files() {
 		log "Need at least two arguments: Target path and target free space."
 		return;
 	fi
-	log "remove_files() -- depreciating --> file_manager() -- $USER"
+	log "remove_files() -- depreciated --> file_manager() -- $USER"
 	file_manager "FREE" "$1" "$2" "$((10*1024*1024))"
 }
 
@@ -236,7 +236,7 @@ function limit_usage() {
 		log "Need at least two arguments: Target path and target free space."
 		return;
 	fi
-	log "limit_usage() -- depreciating --> file_manager() -- $USER"
+	log "limit_usage() -- deprecated --> file_manager() -- $USER"
 	file_manager "LIMIT" "$1" "$2" "$((10*1024*1024))"
 }
 
@@ -279,9 +279,10 @@ function genfilelist() {
 
 ##########################################################
 #
-#  e r a s e _ b u t _ k e e p
+#  e r a s e _ b u t _ k e e p 
 #
 #     erases files in a folder but keep the last N files (sorted alphabetically)
+#     e.g., erase all log files but keep the latest 3
 #
 #       o   erase_but_keep DIR NUM PATTERN
 #
@@ -314,7 +315,145 @@ function erase_but_keep() {
 ##########################################################
 function remove_empty_dir() {
 	log "remove_empty_dir -- $1 -- $USER"
-	log "`find $1 -depth -type d -empty`"
-	find $1 -depth -type d -empty -exec rmdir '{}' \;
+	log "`find -L $1 -depth -type d -empty`"
+	find -L $1 -depth -type d -empty -exec rmdir '{}' \;
+}
+
+##########################################################
+#
+#  w a r n _ i f _ l o w
+#
+#     generates a warning message if / is running low in space
+#
+#       o	warn_if_low DIR LOW_IN_BYTE
+#
+##########################################################
+function warn_if_low() {
+	DIR=$1; if [ -z "$DIR" ]; then DIR="/"; fi
+	LOW=$2; if [ -z "$LOW" ]; then LOW="$((5*1024*1024*1024))"; fi
+	LOW_KB=$((LOW/1024))
+	LOW_MB=$((LOW/1024/1024))
+	LOW_GB=$((LOW/1024/1024/1024))
+	space=`df -k $DIR | tail -1 | awk '{printf $(NF-2)}'`
+	if [ "$space" -lt "$LOW_KB" ]; then
+		echo "Low in space for $DIR"
+		if [ "$LOW_GB" -gt 0 ]; then
+			echo "Available: $((space/1024/1024)) GB < $LOW_GB GB."
+		else
+			echo "Available: $((space/1024)) < $LOW_MB MB."
+		fi
+	fi
+}
+
+
+##########################################################
+#
+#  c h e c k _ p r o c e s s
+#
+#     checks for processes using ps and grep
+#
+#       o	check_process PROCESS_1 PROCESS_2 PROCESS_3 ...
+#
+##########################################################
+function check_process() {
+	if [ "$#" == "0" ]; then
+		echo "No process to check?"
+		return
+	fi
+	arg="\($1"
+	for ((i=2;i<=$#;i++)); do
+		cmd="c=\${${i}}"
+		eval $cmd
+		arg="$arg\|$c"
+	done
+	arg="${arg}\)"
+	#echo "$arg"
+	#ps x -u $USER -o pid,stat,cmd | grep -e "$arg" | grep -v "\(grep\|tail\|ssh\|bin/su\)"
+	if [ `uname` == "Darwin" ]; then
+		keywords="ruser,pid,stat,pcpu,pmem,command";
+	else
+		keywords="ruser,pid,stat,pcpu,pmem,nlwp,ucomm";
+	fi
+	ps ax -o $keywords | head -1
+	ps ax -o $keywords | grep -e "$USER" | grep -e "$arg" | grep -v "\(grep\|tail\|ssh\|bin/su\)"
+}
+
+
+##########################################################
+#
+#  f e c h o
+#
+#     fills the 78th character in that line with |
+#
+#       o	fecho WHAT_YOU_WANT_TO_PRINT
+#
+##########################################################
+function fecho() {
+	str="$@"
+	str="${str:0:78}"
+    printf "%-78s|\n" "$str"
+}
+
+
+##########################################################
+#
+#  t e x t o u t
+#
+#     prints out the text with color
+#
+#       o	echo SOMETHING | textout TITLE COLOR
+#       o   cat SOME_FILE | textout TITLE COLOR
+#
+##########################################################
+function textout() {
+#   tput bold
+#   tput setab 4
+    if [ "$#" -ge 2 ]; then
+#       tput setaf $2
+	case "$2" in
+		red)     c=1;;
+		green)   c=2;;
+		yellow)  c=3;;
+		blue)    c=4;;
+		magenta) c=5;;
+		cyan)    c=6;;
+		white)   c=7;;
+		*)       c=$2;;
+	esac
+        echo -ne "\033[3${c}m"
+    fi
+    len=${#1}
+    if [ "$#" -ge 1 ]; then
+		LINE="============================================"
+        fecho "$1"
+        fecho "${LINE:0:$len}"
+    fi
+    cat - | while read line; do
+        fecho "$line"
+    done
+	#tput sgr0
+}
+
+##########################################################
+#
+#  h e a d _ t a i l
+#
+#     shows the file list's head and tail portions of a folder
+#
+#       o	head_tail DIR
+#
+##########################################################
+function headtail() {
+    DIR=$1
+    if [ -d $DIR ]; then
+        NUM=`ls $DIR/ | wc -l`
+        SPACE=`du -hs $DIR/`
+        SPACE=`expr "$SPACE" : '\(.*[bkMGT]\)'`
+#       SPACE=0
+        ls -lh $DIR/ | head -n 2 | tail -n 1 | textout "$2 ($NUM --> $SPACE)" $3
+        fecho ":          : :    :      :         :          :     :"
+        ls -lh $DIR/ | tail -n 5 | textout
+    fi
+	tput sgr0
 }
 
