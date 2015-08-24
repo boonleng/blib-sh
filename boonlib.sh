@@ -143,7 +143,7 @@ function file_manager() {
 		log "Target limit < `num2str3 $((target_space/1024/1024))` MB"
 		# NOTE: du returns free space in 1K blocks
 		# Example, 1TB = 1024 GB = 1024*1024*1024 K-blocks
-		current=`nice -n 20 du -k -s -d 0 $target_path/ | awk {'print $1'}`
+		current=`nice -n 20 du -k -s $target_path/ | awk {'print $1'}`
 	else
 		log "This should not happened."
 		return
@@ -185,7 +185,7 @@ function file_manager() {
 					log "Actual free space: `num2str3 $((current/1024))` MB"
 				else
 					log "Estimated usage: `num2str3 $((current/1024))` MB"
-					current=`nice -n 20 du -k -s -d 0 $target_path/ | awk {'print $1'}`
+					current=`nice -n 20 du -k -s $target_path/ | awk {'print $1'}`
 					log "Actual usage: `num2str3 $((current/1024))` MB"
 				fi
 				if [[ "$method" == "FREE" && "$current" -lt "$((target_space-tolerance))" ]] || 
@@ -327,16 +327,29 @@ function erase_but_keep() {
 ##########################################################
 function remove_folders_but_keep() {
 	DIR=$1; if [ -z "$DIR" ]; then DIR="./"; fi
-	NUM=$2; if [ -z "$NUM" ]; then NUM=1000; fi
+	NUM=$2; if [ -z "$NUM" ]; then NUM=100; fi
 	PAT=$3; if [ -z "$PAT" ]; then PAT='*'; fi
-  	log "erase_but_keep() -- $USER"
+  	log "remove_folders_but_keep() -- $USER"
 	log "D:$DIR  N:$NUM  P:$PAT"
-	find -H "$DIR" -maxdepth 1 -type d -name "$PAT" | sort | 
-		sed -n -e :a -e "1,${NUM}!{P;N;D;};N;ba" |
-		while read f; do
-			log "Removing $f"
-			rm -rf $f
-		done
+	count=0;
+#	find -H "$DIR" -mindepth 1 -maxdepth 1 -type d -name "$PAT" | sort | 
+#		sed -n -e :a -e "1,${NUM}!{P;N;D;};N;ba" |
+#		while read f; do
+#			log "Remove $f"
+#			rm -rf $f
+#			count=$((count+1))
+#		done
+	while read f; do
+		log "Remove $f"
+		rm -rf $f
+		count=$((count+1))
+	done < <(find -H "$DIR" -mindepth 1 -maxdepth 1 -type d -name "$PAT" | sort |
+		sed -n -e :a -e "1,${NUM}!{P;N;D;};N;ba")
+	if [ "$count" -gt 0 ]; then
+		log "Removed $count folder(s)"
+	else
+		log "Nothing removed"
+	fi
 }
 
 
