@@ -2,11 +2,13 @@
 
 ##########################################################
 #
-#  BOONLIB - Boonleng's BASH library
+#  BOONLIB - Boonleng's library
 #  This is a collection of shell script functions for
-#  convenient / lazy coding. Tasks that I frequently do.
+#  various tasks. Tasks that I frequently do.
 #
-#  Boon Leng Cheong
+#  Copyright (c) 2009-2011 Boon Leng Cheong
+#  Atmospheric Radar Research Center
+#  The University of Oklahoma
 #
 ##########################################################
 
@@ -141,7 +143,7 @@ function file_manager() {
 		log "Target limit < `num2str3 $((target_space/1024/1024))` MB"
 		# NOTE: du returns free space in 1K blocks
 		# Example, 1TB = 1024 GB = 1024*1024*1024 K-blocks
-		current=`du -ks $target_path/ | awk {'print $1'}`
+		current=`nice -n 20 du -k -s -d 0 $target_path/ | awk {'print $1'}`
 	else
 		log "This should not happened."
 		return
@@ -161,9 +163,17 @@ function file_manager() {
 	log "Current: `num2str3 $((current/1024))` MB $ineq `num2str3 $((target_space/1024))` MB"
 	num=0;
 	# Get size to be in 1K-block
-	find -L $target_path -maxdepth 3 -type f -printf '%p,%k\n' | sort | while read line; do
-		file=${line%%,*}
-		size=${line##*,}
+	#find -L $target_path -maxdepth 3 -type f -printf '%p,%k\n' | sort | while read line; do
+	#	file=${line%%,*}
+	#	size=${line##*,}
+	nice -n 20 find $target_path -maxdepth 3 -type f -print | sort | while read line; do
+		# file=${line%%,*}
+		# size=${line##*,}
+		file=$line
+		# file size in 512 block
+		size=`ls -s $file | awk {'print $1'}`
+		# file size in 1K-block
+		size=$((size/2))
 		if [[ "$method" == "FREE" && "$current" -gt "$target_space" ]] || 
 		   [[ "$method" == "LIMIT" && "$current" -lt "$target_space" ]]; then
 			# At this point the condition is met
@@ -175,7 +185,7 @@ function file_manager() {
 					log "Actual free space: `num2str3 $((current/1024))` MB"
 				else
 					log "Estimated usage: `num2str3 $((current/1024))` MB"
-					current=`du -ks $target_path/ | awk {'print $1'}`
+					current=`nice -n 20 du -k -s -d 0 $target_path/ | awk {'print $1'}`
 					log "Actual usage: `num2str3 $((current/1024))` MB"
 				fi
 				if [[ "$method" == "FREE" && "$current" -lt "$((target_space-tolerance))" ]] || 
@@ -303,6 +313,32 @@ function erase_but_keep() {
 			rm -f $f
 		done
 }
+
+
+##########################################################
+#
+#  r e m o v e _ f o l d e r s _ b u t _ k e e p 
+#
+#     removes folders but keep the last N folders (sorted alphabetically)
+#     e.g., erase all log files but keep the latest 3
+#
+#       o   remove_folders_but_keep DIR NUM PATTERN
+#
+##########################################################
+function remove_folders_but_keep() {
+	DIR=$1; if [ -z "$DIR" ]; then DIR="./"; fi
+	NUM=$2; if [ -z "$NUM" ]; then NUM=1000; fi
+	PAT=$3; if [ -z "$PAT" ]; then PAT='*'; fi
+  	log "erase_but_keep() -- $USER"
+	log "D:$DIR  N:$NUM  P:$PAT"
+	find -H "$DIR" -maxdepth 1 -type d -name "$PAT" | sort | 
+		sed -n -e :a -e "1,${NUM}!{P;N;D;};N;ba" |
+		while read f; do
+			log "Removing $f"
+			rm -rf $f
+		done
+}
+
 
 ##########################################################
 #
