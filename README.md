@@ -31,5 +31,5 @@ A command line to remove extra attributes, which can be seen using `ls -l@`. Som
 
 ncdc.sh
 -------
-A script to use `wget` to download all the `.tgz` files in a URL. This was specifically developed for downloading multiple Level-II files from an NCDC download link.
+A script to use `wget` to download all the `.gz` files in a URL. This was specifically developed for downloading multiple Level-II files from an NCDC download link. It is set up to traverse two levels down so files with URL `http://.../HASXXXX/0001/XXX_V06.gz`, `http://.../HASXXXX/0002/XXX_V06.gz`, etc. will be all be downloaded simply by providing the top level link received in the email. All files will be downloaded in `~/Downloads/HAS000000000/` where the the last path component represents the order number.
 

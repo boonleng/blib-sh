@@ -5,5 +5,13 @@ if [ -z ${1} ]; then
 	exit 0;
 fi
 
-wget -r -l 1 -nd -np --reject index* -A *.gz ${1}
+order="${1##*has/}"
+
+echo -e "Creating directory \033[1;33m~/Downloads/${order}\033[0m for download ..."
+mkdir -p ~/Downloads/${order}
+cd ~/Downloads/${order}
+
+wget -r -l 2 -nd -np --reject index* -A *.gz ${1}
+
+cd - >/dev/null
 
