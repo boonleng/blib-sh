@@ -9,7 +9,27 @@ boonlib.sh
 A bunch of convenient functions
 
 
+mount_anastasia.sh
+------------------
+This script uses `sshfs` to mount a LAN machine that can be reached with .local addressing. Example usage is `mount_anastasia.sh deepsky` to mount the root drive with partition name `deepsky` of the machine `deepsky.local`. This naming scheme is what I usually practice. Why Anastasia? Anastasia is the main host of PX-10,000 which I use SSHFS the most.
+
+
 tconfig.sh
 ----------
 A collection of SSH tunnel set up parameters for pulling reverse tunnel connections that have been established through starbuck.nwc.ou.edu or any servers.
+
+
+wake.sh
+-------
+Wake up a machine in LAN.
+
+
+rmtags.sh
+---------
+A command line to remove extra attributes, which can be seen using `ls -l@`. Some annoying tags like com.apple.quarantine will be removed using this utility.
+
+
+ncdc.sh
+-------
+A script to use `wget` to download all the `.tgz` files in a URL. This was specifically developed for downloading multiple Level-II files from an NCDC download link.
 
