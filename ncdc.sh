@@ -11,7 +11,7 @@ echo -e "Creating directory \033[1;33m~/Downloads/${order}\033[0m for download .
 mkdir -p ~/Downloads/${order}
 cd ~/Downloads/${order}
 
-wget -r -l 2 -nd -np --reject index* -A *.gz ${1}
+wget -r -q -l 2 -nd -np --reject index* -A *.gz ${1}
 
 cd - >/dev/null
 
