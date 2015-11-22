@@ -19,7 +19,7 @@ if [ ! -f fileList.txt ]; then
 	# Do the old school method, get everything in the folder
 	wget -r -q -l 2 -nd -np --show-progress --reject index* -A *.gz ${1}
 else
-	i=0
+	i=1
 	n=$(wc -l fileList.txt)
 	n=${n% *}
 	n=$((n+0))
@@ -30,7 +30,7 @@ else
 			i=0
 		fi
 		echo "${i} of ${n} ${url}"
-		wget -q --show-progress -nd -np ${1%/}/${file}
+		wget -q --show-progress -nd -np ${1%/}/${file} -O ${file}
 		i=$((i+1))
 	done < fileList.txt
 fi
