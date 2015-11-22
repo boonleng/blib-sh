@@ -30,7 +30,7 @@ else
 			i=0
 		fi
 		echo "${i} of ${n} ${url}"
-		wget -q --show-progress -nd -np ${1%/}/${file} -O ${file}
+		wget -q --show-progress -nd -np ${1%/}/${file} -O ${file##*/}
 		i=$((i+1))
 	done < fileList.txt
 fi
