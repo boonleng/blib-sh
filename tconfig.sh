@@ -17,6 +17,9 @@ for ((i=0; i<4; i++)); do
 	q=$((q+1))
 done
 
+# ARRC webserver
+str="$str -L 20004:rwv01.arrc.nor.ou.edu:22"
+
 for ((i=22000; i<22003; i++)); do
 	str="$str -L $i:localhost:$i";
 done
