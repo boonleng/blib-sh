@@ -9,7 +9,7 @@ q=55900
 # Initialize an empty string
 str=""
 
-# Make N pull down from the SSH server
+# Computers in office
 for ((i=0; i<4; i++)); do
 	str="$str -L $p:localhost:$p";
 	str="$str -L $q:localhost:$q";
@@ -17,12 +17,14 @@ for ((i=0; i<4; i++)); do
 	q=$((q+1))
 done
 
-# ARRC webserver
+# ARRC web, data, etc. servers
 str="$str -L 20004:rwv01.arrc.nor.ou.edu:22"
+str="$str -L 20005:10.197.14.59:22"
 
-for ((i=22000; i<22003; i++)); do
-	str="$str -L $i:localhost:$i";
-done
+# Computers in PX-1000
+#for ((i=22000; i<22003; i++)); do
+#	str="$str -L $i:localhost:$i";
+#done
 
 while read line; do
 	if [ $line ]; then
