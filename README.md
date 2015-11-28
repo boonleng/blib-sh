@@ -6,7 +6,25 @@ Over the years, I have written some functions to help making coding easier. I ha
 
 boonlib.sh
 ----------
-A bunch of convenient functions
+This is a collection of BASH functions, mostly for handling some form of automation for `cron` jobs.
+
+Some global variables for general purposes:
+- `LOGFILE` for logging.
+
+A collection of convenient functions:
+- `log()` logs an entry.
+- `slog()` logs an entry with short timestamp.
+- `num2str3()` converts a string to a 3-digit groups with comma.
+- `file_manager()` frees up space or limits the usage until the targeted number is achieved.
+- `remove_files_but_keep()` removes all files in a folder but keep the last `N` files.
+- `remove_folders_but_keep()` removes all folders in a folder but keep the last N files.
+- `remove_empty_dir()` removes empty directories
+- `warn_if_low()` generates a warning message if it is running low in space
+- `check_process()` checks for processes using ps and grep
+- `fecho()` fills the 78th character in that line with |
+- `textout()` prints out the text with color
+- `headtail()` shows the head and tail portions of a file list of a folder
+- `remove_minutes_old_files()` removes files older than `N` minutes.
 
 
 makeramdisk.sh

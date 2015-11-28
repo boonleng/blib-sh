@@ -99,7 +99,7 @@ function num2str3() {
 #
 #  f i l e _ m a n a g e r
 #
-#     frees up space or limits the the usage until the targeted
+#     frees up space or limits the usage until the targeted
 #     number is achieved
 #
 #       o  file_manager FREE/LIMIT PATH TARGET_BYTE [TOLERANCE]
@@ -269,7 +269,6 @@ function limit_usage() {
 #
 #     erases all log files but keep the latest 3
 #
-#
 ##########################################################
 function remove_files_but_keep() {
 	remove_but_keep f $1 $2 $3
@@ -322,6 +321,7 @@ function remove_empty_dir() {
 	log "`find -L $1 -depth -type d -empty`"
 	find -L $1 -depth -type d -empty -exec rmdir '{}' \;
 }
+
 
 ##########################################################
 #
@@ -438,11 +438,12 @@ function textout() {
 	#tput sgr0
 }
 
+
 ##########################################################
 #
 #  h e a d _ t a i l
 #
-#     shows the file list's head and tail portions of a folder
+#     shows the head and tail portions of a file list of a folder
 #
 #       o	head_tail DIR
 #
@@ -459,7 +460,6 @@ function headtail() {
 	fi
 	tput sgr0
 }
-
 
 
 ##########################################################
