@@ -13,12 +13,16 @@ Some global variables for general purposes:
 
 A collection of convenient functions:
 
-#### `log()`
+#### log()
 logs an entry.
 
 	log "Hello"
 
-logs an entry `1/28 02:49:29 PM : Hello` in `${LOGFILE}`
+logs an entry
+
+	1/28 02:49:29 PM : Hello
+	
+in the logfile described by the global variable `${LOGFILE}`.
 	
 #### `slog()`
 logs an entry with short timestamp.
