@@ -506,3 +506,27 @@ function headtail() {
 	tput sgr0
 }
 
+
+
+##########################################################
+#
+#  r e m o v e _ m i n u t e s _ o l d _ f i l e s
+#
+#     removes files older than N minutes
+#
+#       o	remove_old_files DIR MINUTES PATTERN
+#
+##########################################################
+function remove_minutes_old_files() {
+	DIR=${1}; if [ -z "${DIR}" ]; then DIR="./"; fi
+	NUM=${2}; if [ -z "${NUM}" ]; then NUM=300; fi
+	PAT=${3}; if [ -z "${PAT}" ]; then PAT='*.tgz'; fi
+	log "remove_old_files() -- ${USER}"
+	log "HOME:${DIR}  MIN:${NUM}  PAT:${PAT}"
+	find -H ${DIR} -maxdepth 2 -type f -mmin "+${NUM}" -name "${PAT}" | sort |
+		while read f; do
+			log "Erase ${f}"
+			rm -f ${f}
+		done
+}
+
