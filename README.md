@@ -103,7 +103,7 @@ produces output
 #### `textout()`
 prints out the text with color and title
 
-	tail -n 5 ${LOG} | textout RCC 6` shows the last 5 lines of logfile `${LOG}`
+	tail -n 5 ${LOG} | textout RCC green
 
 produces output
 
