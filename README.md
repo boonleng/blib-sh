@@ -17,16 +17,17 @@ A collection of convenient functions:
 - `num2str3()` converts a string to a 3-digit groups with comma.
 - `file_manager()` frees up space or limits the usage until the targeted number is achieved.
 - `remove_files_but_keep()` removes all files in a folder but keep the last `N` files.
-- `remove_folders_but_keep()` removes all folders in a folder but keep the last N files.
+- `remove_folders_but_keep()` removes all folders in a folder but keep the last `N` files.
 - `remove_minutes_old_files()` removes files older than `N` minutes.
 - `remove_empty_dir()` removes empty directories
 - `warn_if_low()` generates a warning message if it is running low in space
 - `check_process()` checks for processes using ps and grep
-- `fecho()` fills the 78th character in that line with |
+- `fecho()` fills the 78th character in that line with `|`
 - `textout()` prints out the text with color and title
 - `headtail()` shows the head and tail portions of a file list of a folder
 
 ### Examples
+Some functions are better explained with examples so here they are:
 
 #### `log()`
 logs an entry.
@@ -50,15 +51,6 @@ logs an entry
 
 in the logfile described by the global variable `${LOGFILE}`.
 	
-#### `num2str3()`
-converts a string to a 3-digit groups with comma.
-
-	echo num2str(123456)
-
-returns
-
-	123,456
-
 #### `file_manager()`
 frees up space or limits the usage until the targeted number is achieved.
 
@@ -110,6 +102,7 @@ produces output
 
 #### `textout()`
 prints out the text with color and title
+
 	tail -n 5 ${LOG} | textout RCC 6` shows the last 5 lines of logfile `${LOG}`
 
 produces output
