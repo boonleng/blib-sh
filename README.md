@@ -13,12 +13,14 @@ Some global variables for general purposes:
 
 A collection of convenient functions:
 
-### `log()` ### 
+#### `log()`
 logs an entry.
-	`log "Hello"` logs an entry `1/28 02:49:29 PM : Hello` in `LOGFILE`
+	log "Hello"
+logs an entry `1/28 02:49:29 PM : Hello` in `LOGFILE`
 	
-- `slog()` logs an entry with short timestamp.
-	- `slog "Hello"` logs an entry `02:49 : Hello` in `LOGFILE`
+#### `slog()`
+logs an entry with short timestamp.
+	`slog "Hello"` logs an entry `02:49 : Hello` in `LOGFILE`
 	
 - `num2str3()` converts a string to a 3-digit groups with comma.
 	- `num2str() "123456"` returns `123,456`
