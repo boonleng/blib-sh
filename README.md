@@ -13,6 +13,7 @@ Some global variables for general purposes:
 
 A collection of convenient functions:
 - `log()` logs an entry.
+	- `log "This is a log message"`
 - `slog()` logs an entry with short timestamp.
 - `num2str3()` converts a string to a 3-digit groups with comma.
 - `file_manager()` frees up space or limits the usage until the targeted number is achieved.
