@@ -13,7 +13,7 @@ Some global variables for general purposes:
 
 A collection of convenient functions:
 
-#### log()
+#### `log()`
 logs an entry.
 
 	log "Hello"
@@ -26,13 +26,30 @@ in the logfile described by the global variable `${LOGFILE}`.
 	
 #### `slog()`
 logs an entry with short timestamp.
-	`slog "Hello"` logs an entry `02:49 : Hello` in `LOGFILE`
+
+	slog "Hello"`
 	
-- `num2str3()` converts a string to a 3-digit groups with comma.
-	- `num2str() "123456"` returns `123,456`
+logs an entry
+
+	02:49 : Hello
+
+in the logfile described by the global variable `${LOGFILE}`.
 	
-- `file_manager()` frees up space or limits the usage until the targeted number is achieved.
-	- `file_manager LIMIT ${HOME}/data 1024*1024*1024` limits usage of `${HOME}/data` to 1 GB
+#### `num2str3()`
+converts a string to a 3-digit groups with comma.
+
+	echo num2str(123456)
+
+returns
+
+	123,456
+
+#### `file_manager()`
+frees up space or limits the usage until the targeted number is achieved.
+
+	file_manager LIMIT ${HOME}/data 1024*1024*1024
+	
+limits usage of `${HOME}/data` to 1 GB
 	
 - `remove_files_but_keep()` removes all files in a folder but keep the last `N` files.
 	- `remove_files_but_keep "${HOME}/logs/drive_clean" 30 '*.log'` removes all files under the folder `${HOME}/logs/drive_clean` but keep the last 30.
