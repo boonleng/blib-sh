@@ -6,8 +6,8 @@
 #  This is a collection of shell script functions for
 #  various tasks. Tasks that I frequently do.
 #
-#  Copyright (c) 2009-2011 Boon Leng Cheong
-#  Atmospheric Radar Research Center
+#  Copyright (c) 2009-2015 Boon Leng Cheong
+#  Advanced Radar Research Center
 #  The University of Oklahoma
 #
 ##########################################################
@@ -253,66 +253,57 @@ function limit_usage() {
 
 ##########################################################
 #
-#  e r a s e _ b u t _ k e e p 
-#
-#     erases files in a folder but keep the last N files (sorted alphabetically)
-#     e.g., erase all log files but keep the latest 3
-#
-#       o   erase_but_keep DIR NUM PATTERN
-#
-##########################################################
-function erase_but_keep() {
-	DIR=$1; if [ -z "$DIR" ]; then DIR="./"; fi
-	NUM=$2; if [ -z "$NUM" ]; then NUM=1000; fi
-	PAT=$3; if [ -z "$PAT" ]; then PAT='*'; fi
-  	log "erase_but_keep() -- $USER"
-	log "D:$DIR  N:$NUM  P:$PAT"
-#	tra="${DIR%/}/.trash"
-#	if [ ! -d "$tra" ]; then mkdir "$tra"; fi
-	find -H "$DIR" -maxdepth 1 -type f -name "$PAT" | sort | 
-		sed -n -e :a -e "1,${NUM}!{P;N;D;};N;ba" |
-		while read f; do
-			log "Erase $f"
-			# mv "$f" "$tra"
-			rm -f $f
-		done
-}
-
-
-##########################################################
-#
+#  r e m o v e _ f i l e s _ b u t _ k e e p 
 #  r e m o v e _ f o l d e r s _ b u t _ k e e p 
 #
-#     removes folders but keep the last N folders (sorted alphabetically)
-#     e.g., erase all log files but keep the latest 3
+#     removes all files / folders in a folder but keep the last N files. The 
+#     files / folders will be sorted alphabetically first before the last N
+#     entries are determined.
 #
-#       o   remove_folders_but_keep DIR NUM PATTERN
+#       o   erase_files_but_keep DIR NUM PATTERN
+#       o   erase_folders_but_keep DIR NUM PATTERN
+#
+#     e.g.,
+#
+#     remove_files_but_keep './log' 3 '*.log'
+#
+#     erases all log files but keep the latest 3
+#
 #
 ##########################################################
+function remove_files_but_keep() {
+	remove_but_keep f $1 $2 $3
+}
+
 function remove_folders_but_keep() {
-	DIR=$1; if [ -z "$DIR" ]; then DIR="./"; fi
-	NUM=$2; if [ -z "$NUM" ]; then NUM=100; fi
-	PAT=$3; if [ -z "$PAT" ]; then PAT='*'; fi
-  	log "remove_folders_but_keep() -- $USER"
-	log "D:$DIR  N:$NUM  P:$PAT"
+	remove_but_keep d $1 $2 $3
+}
+
+function remove_but_keep() {
+	TYP=$1; if [ -z "${TYP}" ]; then
+		echo "Must supply a mode"
+		return
+	fi
+	DIR=$2; if [ -z "${DIR}" ]; then DIR="./"; fi
+	NUM=$3; if [ -z "${NUM}" ]; then NUM=1000; fi
+	PAT=$4; if [ -z "${PAT}" ]; then PAT='*'; fi
+	log "remove_but_keep() -- $USER"
+	log "T:${TYP}  D:${DIR}  N:${NUM}  P:${PAT}"
 	count=0;
-#	find -H "$DIR" -mindepth 1 -maxdepth 1 -type d -name "$PAT" | sort | 
-#		sed -n -e :a -e "1,${NUM}!{P;N;D;};N;ba" |
-#		while read f; do
-#			log "Remove $f"
-#			rm -rf $f
-#			count=$((count+1))
-#		done
 	while read f; do
-		log "Remove $f"
 		rm -rf $f
+		log "Removed $f"
 		count=$((count+1))
-	done < <(find -H "$DIR" -mindepth 1 -maxdepth 1 -type d -name "$PAT" | sort |
+	done < <(find -H "${DIR}" -mindepth 1 -maxdepth 1 -type "${TYP}" -name "${PAT}" | sort |
 		sed -n -e :a -e "1,${NUM}!{P;N;D;};N;ba")
-	if [ "$count" -gt 0 ]; then
-		log "Removed $count folder(s)"
+	if [ "${count}" -gt 0 ]; then
+		if [ "${TYP}" == "d" ]; then
+			log "Removed ${count} folder(s)."
+		else
+			log "Removed ${count} files(s)."
+		fi
 	else
-		log "Nothing removed"
+		log "Nothing removed."
 	fi
 }
 
@@ -404,7 +395,7 @@ function check_process() {
 function fecho() {
 	str="$@"
 	str="${str:0:78}"
-    printf "%-78s|\n" "$str"
+	printf "%-78s|\n" "$str"
 }
 
 
@@ -419,31 +410,31 @@ function fecho() {
 #
 ##########################################################
 function textout() {
-#   tput bold
-#   tput setab 4
-    if [ "$#" -ge 2 ]; then
+	#   tput bold
+	#   tput setab 4
+	if [ "$#" -ge 2 ]; then
 #       tput setaf $2
-	case "$2" in
-		red)     c=1;;
-		green)   c=2;;
-		yellow)  c=3;;
-		blue)    c=4;;
-		magenta) c=5;;
-		cyan)    c=6;;
-		white)   c=7;;
-		*)       c=$2;;
-	esac
-        echo -ne "\033[3${c}m"
-    fi
-    len=${#1}
-    if [ "$#" -ge 1 ]; then
+		case "$2" in
+			red)     c=1;;
+			green)   c=2;;
+			yellow)  c=3;;
+			blue)    c=4;;
+			magenta) c=5;;
+			cyan)    c=6;;
+			white)   c=7;;
+			*)       c=$2;;
+		esac
+		echo -ne "\033[3${c}m"
+	fi
+	len=${#1}
+	if [ "$#" -ge 1 ]; then
 		LINE="============================================"
-        fecho "$1"
-        fecho "${LINE:0:$len}"
-    fi
-    cat - | while read line; do
-        fecho "$line"
-    done
+		fecho "$1"
+		fecho "${LINE:0:$len}"
+	fi
+	cat - | while read line; do
+		fecho "$line"
+	done
 	#tput sgr0
 }
 
@@ -457,16 +448,15 @@ function textout() {
 #
 ##########################################################
 function headtail() {
-    DIR=$1
-    if [ -d $DIR ]; then
-        NUM=`ls $DIR/ | wc -l`
-        SPACE=`du -hs $DIR/`
-        SPACE=`expr "$SPACE" : '\(.*[bkMGT]\)'`
-#       SPACE=0
-        ls -lh $DIR/ | head -n 2 | tail -n 1 | textout "$2 ($NUM --> $SPACE)" $3
-        fecho ":          : :    :      :         :          :     :"
-        ls -lh $DIR/ | tail -n 5 | textout
-    fi
+	DIR=$1
+	if [ -d $DIR ]; then
+		NUM=`ls $DIR/ | wc -l`
+		SPACE=`du -hs $DIR/`
+		SPACE=`expr "$SPACE" : '\(.*[bkMGT]\)'`
+		ls -lh $DIR/ | head -n 2 | tail -n 1 | textout "$2 ($NUM --> $SPACE)" $3
+		fecho ":          : :    :      :         :          :     :"
+		ls -lh $DIR/ | tail -n 5 | textout
+	fi
 	tput sgr0
 }
 
@@ -483,14 +473,19 @@ function headtail() {
 ##########################################################
 function remove_minutes_old_files() {
 	DIR=${1}; if [ -z "${DIR}" ]; then DIR="./"; fi
-	NUM=${2}; if [ -z "${NUM}" ]; then NUM=300; fi
+	NUM=${2}; if [ -z "${NUM}" ]; then NUM=1440; fi
 	PAT=${3}; if [ -z "${PAT}" ]; then PAT='*.tgz'; fi
 	log "remove_old_files() -- ${USER}"
 	log "HOME:${DIR}  MIN:${NUM}  PAT:${PAT}"
-	find -H ${DIR} -maxdepth 2 -type f -mmin "+${NUM}" -name "${PAT}" | sort |
-		while read f; do
-			log "Erase ${f}"
-			rm -f ${f}
-		done
+	count=0
+	while read f; do
+		rm -f ${f}a
+		log "Removed ${f}"
+		count=$((count+1))
+	done < <(find -H ${DIR} -maxdepth 2 -type f -mmin "+${NUM}" -name "${PAT}" | sort)
+	if [ "$count" -gt 0 ]; then
+		log "Removed $count file(s)."
+	else
+		log "Nothing removed."
+	fi
 }
-
