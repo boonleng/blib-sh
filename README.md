@@ -12,7 +12,7 @@ Some global variables for general purposes:
 - `LOGFILE` for logging.
 
 A collection of convenient functions:
-- `log()`(#log) logs an entry.
+- [`log()`](#log) logs an entry.
 - `slog()` logs an entry with short timestamp.
 - `num2str3()` converts a string to a 3-digit groups with comma.
 - `file_manager()` frees up space or limits the usage until the targeted number is achieved.
