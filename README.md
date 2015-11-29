@@ -22,7 +22,7 @@ This is a collection of BASH functions, mostly for handling some form of automat
 - [`textout()`](#textout)
 - [`headtail()`](#headtail)
 
-[More on boonlib.sh][boonlib] ...
+[More on boonlib.sh](#more-on-boonlibsh) ...
 
 
 makeramdisk.sh
@@ -267,7 +267,3 @@ produces
 	-rw-r--r--    1 boonleng  staff    33K Nov 17 22:03 nvrambak.bin              |
 	-rw-r--r--    1 boonleng  staff   621K Nov  8 09:51 opencl-1-2-quick-reference|
 	drwxr-xr-x    7 boonleng  staff   238B Nov 25 21:22 tables                    |
-
-
-
-[boonlib]: #more-on-boonlibsh
