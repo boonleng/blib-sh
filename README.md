@@ -52,7 +52,7 @@ A collection of SSH tunnel set up parameters for pulling reverse tunnel connecti
 
 wake.sh
 -------
-Wake up a machine in LAN.
+Wake up a machine in LAN. This is a convenient function to wake up several computers by name. It may not work for you.
 
 
 More on boonlib.sh
