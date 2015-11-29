@@ -6,7 +6,22 @@ Over the years, I have written some functions to help making coding easier. I ha
 
 boonlib.sh
 ----------
-This is a collection of BASH functions, mostly for handling some form of automation for time-scheduled jobs.
+This is a collection of BASH functions, mostly for handling some form of automation for time-scheduled jobs. Here is a summary of the functions within the collection:
+
+A collection of convenient functions:
+- [`log()`](#log)
+- [`slog()`](#slog)
+- [`num2str3()`](#num2str)
+- [`file_manager()`](#file_manager)
+- [`remove_files_but_keep()`](#remove_files_but_keep)
+- [`remove_folders_but_keep()`](#remove_folders_but_keep)
+- [`remove_minutes_old_files()`](#remove_minutes_old_files)
+- [`remove_empty_dir()`](#remove_empty_dir)
+- [`warn_if_low()`](#warn_if_low)
+- [`check_process()`](#check_process)
+- [`fecho()`](#fecho)
+- [`textout()`](#textout)
+- [`headtail()`](#headtail)
 
 [More on boonlib.sh][boonlib] ...
 
@@ -256,4 +271,4 @@ produces
 
 
 
-[boonlib]: (#boonlib)
+[boonlib]: #boonlib
