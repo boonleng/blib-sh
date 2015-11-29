@@ -6,7 +6,7 @@ Over the years, I have written some functions to help making coding easier. I ha
 
 boonlib.sh
 ----------
-This is a collection of BASH functions, mostly for handling some form of automation for `cron` jobs.
+This is a collection of BASH functions, mostly for handling some form of automation for time-scheduled jobs.
 
 Some global variables for general purposes:
 - `LOGFILE` for logging.
@@ -44,7 +44,7 @@ logs an entry
 
 	1/28 02:49:29 PM : Hello World.
 	
-in the logfile described by the global variable `${LOGFILE}`.
+in the logfile, which is described by the global variable `logfile`.
 	
 #### `slog()`
 logs an entry with short timestamp. This is aimed for log files that are named by day so there is no need to put a date in each log entry.
@@ -55,13 +55,13 @@ logs an entry with short timestamp. This is aimed for log files that are named b
 
 ##### Example:
 
-	slog "All done."`
+	slog "All done."
 	
 logs an entry
 
 	02:49 : All done.
 
-in the logfile described by the global variable `${LOGFILE}`.
+in the logfile.
 	
 #### `file_manager()`
 frees up space or limits the usage until the targeted number is achieved.
@@ -72,13 +72,13 @@ frees up space or limits the usage until the targeted number is achieved.
 
 ##### Examples:
 
-	file_manager LIMIT ${HOME}/data 1024*1024*1024
+	file_manager LIMIT ${HOME}/figs 1024*1024*1024
 	file_manager FREE ${HOME}/data 1024*1024*1024
 	
-where the first line limits usage of `${HOME}/data` to 1 GB; while the second line ensures the free space of the partition where `${HOME}/data` belongs to is 1 GB.
+where the first line limits usage of _${HOME}/figs_ to 1 GB; while the second line ensures the free space of the partition where `${HOME}/data` belongs to is at least 1 GB.
 	
 #### `remove_files_but_keep()`
-removes all files in a folder but keep the last `N` files.
+removes all files in a folder but keep the last specified number of files.
 
 ##### Syntax:
 
