@@ -8,7 +8,6 @@ boonlib.sh
 ----------
 This is a collection of BASH functions, mostly for handling some form of automation for time-scheduled jobs. Here is a summary of the functions within the collection:
 
-A collection of convenient functions:
 - [`log()`](#log)
 - [`slog()`](#slog)
 - [`num2str3()`](#num2str)
@@ -23,7 +22,7 @@ A collection of convenient functions:
 - [`textout()`](#textout)
 - [`headtail()`](#headtail)
 
-[More on boonlib.sh][boonlib] ...
+[More on boonlib.sh] ...
 
 
 makeramdisk.sh
@@ -56,8 +55,8 @@ wake.sh
 Wake up a machine in LAN.
 
 
-[More on boonlib.sh](#boonlib)
-====================
+More on boonlib.sh
+==================
 
 Some global variables for general purposes:
 - `LOGFILE` for logging.
@@ -269,6 +268,3 @@ produces
 	-rw-r--r--    1 boonleng  staff   621K Nov  8 09:51 opencl-1-2-quick-reference|
 	drwxr-xr-x    7 boonleng  staff   238B Nov 25 21:22 tables                    |
 
-
-
-[boonlib]: #boonlib
