@@ -22,7 +22,7 @@ This is a collection of BASH functions, mostly for handling some form of automat
 - [`textout()`](#textout)
 - [`headtail()`](#headtail)
 
-[More on boonlib.sh][#more-on-boonlibsh] ...
+[More on boonlib.sh][boonlib] ...
 
 
 makeramdisk.sh
@@ -270,4 +270,4 @@ produces
 
 
 
-[boonlib]: #boonlib
+[boonlib]: #more-on-boonlibsh
