@@ -8,7 +8,7 @@ boonlib.sh
 ----------
 This is a collection of BASH functions, mostly for handling some form of automation for time-scheduled jobs.
 
-More on [More on boonlib.sh](#boonlib)
+More on [boonlib.sh](#boonlib)
 
 
 makeramdisk.sh
@@ -41,8 +41,10 @@ wake.sh
 Wake up a machine in LAN.
 
 
-[More on boonlib.sh]
---------------------
+[boonlib.sh](#boonlib)
+============
+
+More on the BASH function.
 
 Some global variables for general purposes:
 - `LOGFILE` for logging.
