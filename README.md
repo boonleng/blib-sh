@@ -29,8 +29,7 @@ A collection of convenient functions:
 ### Examples
 Some functions are better explained with examples so here they are:
 
-#### `log()`
-logs an entry with timestamp.
+#### `log()` logs an entry with timestamp.
 
 ##### Syntax:
 
@@ -75,7 +74,7 @@ frees up space or limits the usage until the targeted number is achieved.
 	file_manager LIMIT ${HOME}/figs 1024*1024*1024
 	file_manager FREE ${HOME}/data 1024*1024*1024
 	
-where the first line limits usage of '${HOME}/figs' to 1 GB; while the second line ensures the free space of the partition where `${HOME}/data` belongs to is at least 1 GB.
+where the first line limits usage of `${HOME}/figs` to 1 GB; while the second line ensures the free space of the partition where `${HOME}/data` belongs to is at least 1 GB.
 	
 #### `remove_files_but_keep()`
 removes all files in a folder but keep the last specified number of files.
@@ -88,10 +87,10 @@ removes all files in a folder but keep the last specified number of files.
 
 	remove_files_but_keep "${HOME}/logs/drive_clean" 30 '*.log'
 	
-removes all files under the folder `${HOME}/logs/drive_clean` but keep the last 30.
+removes all files under .../log/drive_clean that match the file pattern *.log but keep the last 30.
 	
 #### `remove_folders_but_keep()`
-removes all folders in a folder but keep the last `N` files.
+removes all sub-folders in a folder but keep the specified number of sub-folders, which is determined by pre-sorting the list alphabetically.
 
 ##### Syntax:
 
