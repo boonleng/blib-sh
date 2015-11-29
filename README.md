@@ -32,7 +32,11 @@ Some functions are better explained with examples so here they are:
 #### `log()`
 logs an entry.
 
+##### Syntax:
+
 	log MESSAGE
+
+##### Example:
 
 	log "Hello"
 
@@ -84,7 +88,7 @@ removes all folders in a folder but keep the last `N` files.
 removes all folders under the folder `${HOME}/data` but keep the last 5.
 
 #### `remove_minutes_old_files()`
-removes files older than `N` minutes.
+removes files older than the specified age in minutes.
 
 	remove_minutes_old_files FOLDER COUNT PATTERN
 	
