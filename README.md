@@ -32,6 +32,8 @@ Some functions are better explained with examples so here they are:
 #### `log()`
 logs an entry.
 
+	log MESSAGE
+
 	log "Hello"
 
 logs an entry
@@ -42,6 +44,8 @@ in the logfile described by the global variable `${LOGFILE}`.
 	
 #### `slog()`
 logs an entry with short timestamp.
+
+	slog MESSAGE
 
 	slog "Hello"`
 	
@@ -55,8 +59,6 @@ in the logfile described by the global variable `${LOGFILE}`.
 frees up space or limits the usage until the targeted number is achieved.
 
 	file_manager MODE FOLDER TARGET_SIZE
-
-For examples,
 
 	file_manager LIMIT ${HOME}/data 1024*1024*1024
 	file_manager FREE ${HOME}/data 1024*1024*1024
@@ -84,12 +86,16 @@ removes all folders under the folder `${HOME}/data` but keep the last 5.
 #### `remove_minutes_old_files()`
 removes files older than `N` minutes.
 
+	remove_minutes_old_files FOLDER COUNT PATTERN
+	
 	remove_minutes_old_files "${HOME}/px1000" 720 'PX*.tgz'
 	
 removes all files (up to level-2 deep) that are older than 720 minutes and satisfy the name pattern of `PX*.tgz`.
 
 #### `remove_empty_folders()`
 removes empty folders
+
+	remove_empty_folders FOLDER
 
 	remove_empty_folders "${HOME}/data"
 	
@@ -105,19 +111,19 @@ produces a message `Available: 4.9 GB < 5 GB` when the remaining space is 4.9 GB
 #### `check_process()`
 checks for processes using ps and grep
 
-	check_process PROCESS_1 PROCESS_2 ...
+	check_process PROCESS_1 PROCESS_2 PROCESS_3 ...
 
 	check_process rpcd rcc lcc trxd trigd
 
 produces output
-```js
+
 	Processes                                                                     |
 	=========                                                                     |
 	RUSER      PID STAT %CPU %MEM NLWP COMMAND                                    |
 	boonleng 32327 Sl    0.1  0.0    2 iqc                                        |
 	boonleng 32330 Sl    0.1  0.0    4 iqd                                        |
 	boonleng 32333 Sl    0.0  0.0    3 rcc                                        |
-```
+
 #### `textout()`
 prints out the text with color and title
 
@@ -142,18 +148,17 @@ shows the head and tail portions of a file list of a folder
 	headtail ~/Downloads
 	
 produces
-```js
+
 	/Users/boonleng/Downloads (      16 --> 59G)                                  |
 	============================================                                  |
-	drwx------     3 boonleng  staff   102B Apr 16  2014 About Downloads.lpdf     |
-	-rw-r--r--@    1 boonleng  staff   1.1M Nov 25  2013 Joyce.pdf                |
-	-rw-r--r--     1 boonleng  staff   885M Nov 30  2014 La Luna.mkv              |
-	:          : :    :      :         :          :     :                         |
-	-rw-r--r--@    1 boonleng  staff   253B Dec  4  2013 gotobed.txt              |
-	-rw-r--r--@    1 boonleng  staff    33K Nov 17 22:03 nvrambak.bin             |
-	-rw-r--r--@    1 boonleng  staff   621K Nov  8 09:51 opencl-1-2-quick-referenc|
-	drwxr-xr-x     7 boonleng  staff   238B Nov 25 21:22 tables                   |
-```
+	drwx------    3 boonleng  staff   102B Apr 16  2014 About Downloads.lpdf      |
+	-rw-r--r--    1 boonleng  staff   1.1M Nov 25  2013 Scans.pdf                 |
+	-rw-r--r--    1 boonleng  staff   885M Nov 30  2014 simradar.mp4              |
+	:                                                                             |
+	-rw-r--r--    1 boonleng  staff    33K Nov 17 22:03 nvrambak.bin              |
+	-rw-r--r--    1 boonleng  staff   621K Nov  8 09:51 opencl-1-2-quick-reference|
+	drwxr-xr-x    7 boonleng  staff   238B Nov 25 21:22 tables                    |
+
 
 
 makeramdisk.sh
