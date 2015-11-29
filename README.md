@@ -75,7 +75,7 @@ frees up space or limits the usage until the targeted number is achieved.
 	file_manager LIMIT ${HOME}/figs 1024*1024*1024
 	file_manager FREE ${HOME}/data 1024*1024*1024
 	
-where the first line limits usage of _${HOME}/figs_ to 1 GB; while the second line ensures the free space of the partition where `${HOME}/data` belongs to is at least 1 GB.
+where the first line limits usage of '${HOME}/figs' to 1 GB; while the second line ensures the free space of the partition where `${HOME}/data` belongs to is at least 1 GB.
 	
 #### `remove_files_but_keep()`
 removes all files in a folder but keep the last specified number of files.
