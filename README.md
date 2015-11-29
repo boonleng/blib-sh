@@ -104,7 +104,7 @@ where the file pattern is assumed to be * if not supplied.
 
 	remove_folders_but_keep "${HOME}/data" 5 '20[0-9][0-9]*'
 
-removes all folders under the folder `${HOME}/data` but keep the last 5.
+removes all sub-folders that match the naming pattern begins with 2000 - 2099 but keep the last 5.
 
 #### `remove_minutes_old_files()`
 removes files older than the specified age in minutes.
@@ -120,7 +120,7 @@ where the file pattern is assumed to be anything if not supplied.
 
 	remove_minutes_old_files "${HOME}/px1000" 720 'PX*.tgz'
 	
-removes all files (up to level-2 deep) that are older than 720 minutes and satisfy the name pattern of `PX*.tgz`.
+removes all files (up to level-2 deep) that are older than 720 minutes and satisfy the name pattern which begins with "PX" and ends with "tgz".
 
 
 #### `remove_empty_folders()`
@@ -134,7 +134,7 @@ removes empty folders
 
 	remove_empty_folders "${HOME}/data"
 	
-removes all empty folders under the folder `${HOME}/data`.
+removes all sub-folders that are empty. Note that hidden files that begin with ".", e.g., ".DS_Store", can prevent this function from removing the folders.
 
 
 #### `warn_if_low()`
