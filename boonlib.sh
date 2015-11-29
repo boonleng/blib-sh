@@ -293,7 +293,7 @@ function remove_but_keep() {
 		rm -rf $f
 		log "Removed $f"
 		count=$((count+1))
-	done < <(find -H "${DIR}" -mindepth 1 -maxdepth 1 -type "${TYP}" -name "${PAT}" | sort |
+	done < <(find "${DIR}" -mindepth 1 -maxdepth 1 -type "${TYP}" -name "${PAT}" | sort |
 		sed -n -e :a -e "1,${NUM}!{P;N;D;};N;ba")
 	if [ "${count}" -gt 0 ]; then
 		if [ "${TYP}" == "d" ]; then
@@ -309,17 +309,17 @@ function remove_but_keep() {
 
 ##########################################################
 #
-#  r e m o v e _ e m p t y _ d i r
+#  r e m o v e _ e m p t y _ f o l d e r s
 #
-#     removes empty directories as the name suggested
+#     removes empty folders
 #
 #       o    remove_empty_dir DIR
 #
 ##########################################################
-function remove_empty_dir() {
-	log "remove_empty_dir -- $1 -- $USER"
-	log "`find -L $1 -depth -type d -empty`"
-	find -L $1 -depth -type d -empty -exec rmdir '{}' \;
+function remove_empty_folders() {
+	log "remove_empty_folders -- ${1} -- ${USER}"
+	log "`find -L ${1} -depth -type d -empty`"
+	find -L ${1} -depth -type d -empty -exec rmdir '{}' \;
 }
 
 
@@ -412,7 +412,7 @@ function fecho() {
 function textout() {
 	#   tput bold
 	#   tput setab 4
-	if [ "$#" -ge 2 ]; then
+	if [ "${#}" -ge 2 ]; then
 #       tput setaf $2
 		case "$2" in
 			red)     c=1;;
@@ -429,11 +429,11 @@ function textout() {
 	len=${#1}
 	if [ "$#" -ge 1 ]; then
 		LINE="============================================"
-		fecho "$1"
+		fecho "${1}"
 		fecho "${LINE:0:$len}"
 	fi
 	cat - | while read line; do
-		fecho "$line"
+		fecho "${line}"
 	done
 	#tput sgr0
 }
@@ -445,18 +445,19 @@ function textout() {
 #
 #     shows the head and tail portions of a file list of a folder
 #
-#       o	head_tail DIR
+#       o	head_tail DIR [COLOR]
 #
 ##########################################################
 function headtail() {
-	DIR=$1
-	if [ -d $DIR ]; then
-		NUM=`ls $DIR/ | wc -l`
-		SPACE=`du -hs $DIR/`
-		SPACE=`expr "$SPACE" : '\(.*[bkMGT]\)'`
-		ls -lh $DIR/ | head -n 2 | tail -n 1 | textout "$2 ($NUM --> $SPACE)" $3
+	DIR=${1}
+	COLOR=${2}
+	if [ -z ${COLOR} ]; then COLOR=yellow; fi
+	if [ -d ${DIR} ]; then
+		NUM=`ls ${DIR}/ | wc -l`
+		SPACE=$(du -hs ${DIR} | awk {'print $1'})
+		ls -lh ${DIR}/ | head -n 4 | tail -n 3 | textout "${DIR} (${NUM} --> ${SPACE})" ${COLOR}
 		fecho ":          : :    :      :         :          :     :"
-		ls -lh $DIR/ | tail -n 5 | textout
+		ls -lh ${DIR}/ | tail -n 4 | textout
 	fi
 	tput sgr0
 }
@@ -482,7 +483,7 @@ function remove_minutes_old_files() {
 		rm -f ${f}a
 		log "Removed ${f}"
 		count=$((count+1))
-	done < <(find -H ${DIR} -maxdepth 2 -type f -mmin "+${NUM}" -name "${PAT}" | sort)
+	done < <(find ${DIR} -maxdepth 2 -type f -mmin "+${NUM}" -name "${PAT}" | sort)
 	if [ "$count" -gt 0 ]; then
 		log "Removed $count file(s)."
 	else

@@ -12,19 +12,19 @@ Some global variables for general purposes:
 - `LOGFILE` for logging.
 
 A collection of convenient functions:
-- [`log()`](#log) logs an entry.
-- `slog()` logs an entry with short timestamp.
-- `num2str3()` converts a string to a 3-digit groups with comma.
-- `file_manager()` frees up space or limits the usage until the targeted number is achieved.
-- `remove_files_but_keep()` removes all files in a folder but keep the last `N` files.
-- `remove_folders_but_keep()` removes all folders in a folder but keep the last `N` files.
-- `remove_minutes_old_files()` removes files older than `N` minutes.
-- `remove_empty_dir()` removes empty directories
-- `warn_if_low()` generates a warning message if it is running low in space
-- `check_process()` checks for processes using ps and grep
-- `fecho()` fills the 78th character in that line with `|`
-- `textout()` prints out the text with color and title
-- `headtail()` shows the head and tail portions of a file list of a folder
+- [`log()`](#log)
+- [`slog()`](#slog)
+- [`num2str3()`](#num2str)
+- [`file_manager()`](#file_manager)
+- [`remove_files_but_keep()`](#remove_files_but_keep)
+- [`remove_folders_but_keep()`](#remove_folders_but_keep)
+- [`remove_minutes_old_files()`](#remove_minutes_old_files)
+- [`remove_empty_dir()`](#remove_empty_dir)
+- [`warn_if_low()`](#warn_if_low)
+- [`check_process()`](#check_process)
+- [`fecho()`](#fecho)
+- [`textout()`](#textout)
+- [`headtail()`](#headtail)
 
 ### Examples
 Some functions are better explained with examples so here they are:
@@ -54,20 +54,29 @@ in the logfile described by the global variable `${LOGFILE}`.
 #### `file_manager()`
 frees up space or limits the usage until the targeted number is achieved.
 
+	file_manager MODE FOLDER TARGET_SIZE
+
+For examples,
+
 	file_manager LIMIT ${HOME}/data 1024*1024*1024
+	file_manager FREE ${HOME}/data 1024*1024*1024
 	
-limits usage of `${HOME}/data` to 1 GB
+where the first line limits usage of `${HOME}/data` to 1 GB; while the second line ensures the free space of the partition where `${HOME}/data` belongs to is 1 GB.
 	
 #### `remove_files_but_keep()`
 removes all files in a folder but keep the last `N` files.
+
+	remove_files_but_keep FOLDER COUNT PATTERN
 
 	remove_files_but_keep "${HOME}/logs/drive_clean" 30 '*.log'
 	
 removes all files under the folder `${HOME}/logs/drive_clean` but keep the last 30.
 	
 #### `remove_folders_but_keep()`
-removes all folders in a folder but keep the last N files.
+removes all folders in a folder but keep the last `N` files.
 
+	`remove_folders_but_keep` FOLDER COUNT PATTERN
+	
 	remove_folders_but_keep "${HOME}/data" 5 '20[0-9][0-9]*'
 
 removes all folders under the folder `${HOME}/data` but keep the last 5.
@@ -77,31 +86,42 @@ removes files older than `N` minutes.
 
 	remove_minutes_old_files "${HOME}/px1000" 720 'PX*.tgz'
 	
-removes all files (up to level-2 deep) that are older than 720 minutes and have file pattern `PX*.tgz`.
+removes all files (up to level-2 deep) that are older than 720 minutes and satisfy the name pattern of `PX*.tgz`.
 
-#### `remove_empty_dir()`
-removes empty directories
+#### `remove_empty_folders()`
+removes empty folders
 
-	remove_empty_dir "${HOME}/data"
+	remove_empty_folders "${HOME}/data"
 	
 removes all empty folders under the folder `${HOME}/data`.
+
+#### `warn_if_low()`
+produces a message if the partition (of where the folder belongs to) is less than the test size.
+
+	warn_if_low "${HOME}/data" 5*1024*1024*1024
+	
+produces a message `Available: 4.9 GB < 5 GB` when the remaining space is 4.9 GB, which is less than the test size. Otherwise, nothing happens. This can be scheduled on as a cron job to notify the admin when the free space is too little.
 
 #### `check_process()`
 checks for processes using ps and grep
 
+	check_process PROCESS_1 PROCESS_2 ...
+
 	check_process rpcd rcc lcc trxd trigd
 
 produces output
-
+```js
 	Processes                                                                     |
 	=========                                                                     |
 	RUSER      PID STAT %CPU %MEM NLWP COMMAND                                    |
 	boonleng 32327 Sl    0.1  0.0    2 iqc                                        |
 	boonleng 32330 Sl    0.1  0.0    4 iqd                                        |
 	boonleng 32333 Sl    0.0  0.0    3 rcc                                        |
-
+```
 #### `textout()`
 prints out the text with color and title
+
+	textout TITLE [COLOR]
 
 	tail -n 5 ${LOG} | textout RCC green
 
@@ -113,6 +133,27 @@ produces output
 	12:24:39 : [RCC]    From RCC/LCC: ACK. LCC connected.                         |
 	12:24:39 : [RCC] LCC connected.                                               |
 	12:24:58 : [RCC]       00 <Kate>: Hangging up...  ST:Inactive                 |
+
+#### `headtail()`
+shows the head and tail portions of a file list of a folder
+
+	headtail FOLDER [COLOR]
+
+	headtail ~/Downloads
+	
+produces
+```js
+	/Users/boonleng/Downloads (      16 --> 59G)                                  |
+	============================================                                  |
+	drwx------     3 boonleng  staff   102B Apr 16  2014 About Downloads.lpdf     |
+	-rw-r--r--@    1 boonleng  staff   1.1M Nov 25  2013 Joyce.pdf                |
+	-rw-r--r--     1 boonleng  staff   885M Nov 30  2014 La Luna.mkv              |
+	:          : :    :      :         :          :     :                         |
+	-rw-r--r--@    1 boonleng  staff   253B Dec  4  2013 gotobed.txt              |
+	-rw-r--r--@    1 boonleng  staff    33K Nov 17 22:03 nvrambak.bin             |
+	-rw-r--r--@    1 boonleng  staff   621K Nov  8 09:51 opencl-1-2-quick-referenc|
+	drwxr-xr-x     7 boonleng  staff   238B Nov 25 21:22 tables                   |
+```
 
 
 makeramdisk.sh
