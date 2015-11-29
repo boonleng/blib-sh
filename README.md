@@ -30,7 +30,7 @@ A collection of convenient functions:
 Some functions are better explained with examples so here they are:
 
 #### `log()`
-logs an entry.
+logs an entry with timestamp.
 
 ##### Syntax:
 
@@ -38,31 +38,39 @@ logs an entry.
 
 ##### Example:
 
-	log "Hello"
+	log "Hello World."
 
 logs an entry
 
-	1/28 02:49:29 PM : Hello
+	1/28 02:49:29 PM : Hello World.
 	
 in the logfile described by the global variable `${LOGFILE}`.
 	
 #### `slog()`
-logs an entry with short timestamp.
+logs an entry with short timestamp. This is aimed for log files that are named by day so there is no need to put a date in each log entry.
+
+##### Syntax:
 
 	slog MESSAGE
 
-	slog "Hello"`
+##### Example:
+
+	slog "All done."`
 	
 logs an entry
 
-	02:49 : Hello
+	02:49 : All done.
 
 in the logfile described by the global variable `${LOGFILE}`.
 	
 #### `file_manager()`
 frees up space or limits the usage until the targeted number is achieved.
 
-	file_manager MODE FOLDER TARGET_SIZE
+##### Syntax:
+
+	file_manager MODE FOLDER SIZE
+
+##### Examples:
 
 	file_manager LIMIT ${HOME}/data 1024*1024*1024
 	file_manager FREE ${HOME}/data 1024*1024*1024
@@ -72,7 +80,11 @@ where the first line limits usage of `${HOME}/data` to 1 GB; while the second li
 #### `remove_files_but_keep()`
 removes all files in a folder but keep the last `N` files.
 
+##### Syntax:
+
 	remove_files_but_keep FOLDER COUNT PATTERN
+
+##### Example:
 
 	remove_files_but_keep "${HOME}/logs/drive_clean" 30 '*.log'
 	
@@ -81,8 +93,14 @@ removes all files under the folder `${HOME}/logs/drive_clean` but keep the last 
 #### `remove_folders_but_keep()`
 removes all folders in a folder but keep the last `N` files.
 
-	`remove_folders_but_keep` FOLDER COUNT PATTERN
+##### Syntax:
+
+	remove_folders_but_keep FOLDER COUNT [PATTERN]
 	
+where the file pattern is assumed to be * if not supplied.
+	
+##### Example:
+
 	remove_folders_but_keep "${HOME}/data" 5 '20[0-9][0-9]*'
 
 removes all folders under the folder `${HOME}/data` but keep the last 5.
@@ -90,8 +108,14 @@ removes all folders under the folder `${HOME}/data` but keep the last 5.
 #### `remove_minutes_old_files()`
 removes files older than the specified age in minutes.
 
-	remove_minutes_old_files FOLDER COUNT PATTERN
+##### Syntax:
+
+	remove_minutes_old_files FOLDER COUNT [PATTERN]
 	
+where the file pattern is assumed to be anything if not supplied.
+
+##### Example:
+
 	remove_minutes_old_files "${HOME}/px1000" 720 'PX*.tgz'
 	
 removes all files (up to level-2 deep) that are older than 720 minutes and satisfy the name pattern of `PX*.tgz`.
@@ -99,7 +123,11 @@ removes all files (up to level-2 deep) that are older than 720 minutes and satis
 #### `remove_empty_folders()`
 removes empty folders
 
+##### Syntax:
+
 	remove_empty_folders FOLDER
+
+##### Example:
 
 	remove_empty_folders "${HOME}/data"
 	
@@ -108,6 +136,12 @@ removes all empty folders under the folder `${HOME}/data`.
 #### `warn_if_low()`
 produces a message if the partition (of where the folder belongs to) is less than the test size.
 
+##### Syntax:
+
+	warn_if_low FOLDER SIZE
+
+##### Example:
+
 	warn_if_low "${HOME}/data" 5*1024*1024*1024
 	
 produces a message `Available: 4.9 GB < 5 GB` when the remaining space is 4.9 GB, which is less than the test size. Otherwise, nothing happens. This can be scheduled on as a cron job to notify the admin when the free space is too little.
@@ -115,7 +149,11 @@ produces a message `Available: 4.9 GB < 5 GB` when the remaining space is 4.9 GB
 #### `check_process()`
 checks for processes using ps and grep
 
+##### Syntax:
+
 	check_process PROCESS_1 PROCESS_2 PROCESS_3 ...
+
+##### Example:
 
 	check_process rpcd rcc lcc trxd trigd
 
@@ -129,9 +167,13 @@ produces output
 	boonleng 32333 Sl    0.0  0.0    3 rcc                                        |
 
 #### `textout()`
-prints out the text with color and title
+prints out the piped-in text with color and title
+
+##### Syntax:
 
 	textout TITLE [COLOR]
+
+##### Example:
 
 	tail -n 5 ${LOG} | textout RCC green
 
@@ -147,7 +189,11 @@ produces output
 #### `headtail()`
 shows the head and tail portions of a file list of a folder
 
+##### Syntax:
+
 	headtail FOLDER [COLOR]
+
+##### Example:
 
 	headtail ~/Downloads
 	
