@@ -7,6 +7,11 @@ fi
 
 order="${1##*has/}"
 
+if [ -d ~/Downloads/${order} ]; then
+	echo "Directory ${order} exists. Perhaps this has been downloaded?"
+	exit 0
+fi
+
 echo -e "Creating directory \033[1;33m~/Downloads/${order}\033[0m for download ..."
 mkdir -p ~/Downloads/${order}
 cd ~/Downloads/${order}
