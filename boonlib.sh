@@ -480,7 +480,7 @@ function remove_minutes_old_files() {
 	log "HOME:${DIR}  MIN:${NUM}  PAT:${PAT}"
 	count=0
 	while read f; do
-		rm -f ${f}a
+		rm -f ${f}
 		log "Removed ${f}"
 		count=$((count+1))
 	done < <(find ${DIR} -maxdepth 2 -type f -mmin "+${NUM}" -name "${PAT}" | sort)
