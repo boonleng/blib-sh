@@ -12,6 +12,6 @@ ls -l@ "$@" | grep -e "Zone\|com.*" | sort | uniq | while read tag; do
 done
 
 xattr -d ":ZONE.IDENTIFIER:\$DATA" "$@" >/dev/null 2>/dev/null
-chmod 644 "*.jpg *png *.mov *.mp3 *.mp4 *.avi *.wmv"
+#chmod 644 "*.jpg *png *.mov *.mp3 *.mp4 *.avi *.wmv"
 #chmod 644 "$@"
 
