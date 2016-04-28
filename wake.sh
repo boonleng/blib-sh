@@ -51,6 +51,11 @@ case $name in
                 ip="192.168.2.255"
                 port="11"
                 ;;
+	"deepsky" )
+		mac="00:0e:c6:88:db:b0"
+		ip="192.168.2.255"
+		port="11"
+		;;
 	* )
 		echo "Uknown machine"
 		exit

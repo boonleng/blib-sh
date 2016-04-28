@@ -11,6 +11,7 @@ if [ ! -d /Volumes/${DEST} ]; then
 	mkdir /Volumes/${DEST}
 fi
 
-sshfs root@${DEST}.local:/ /Volumes/${DEST} -o auto_cache,reconnect,follow_symlinks,defer_permissions,negative_vncache,volname=${DEST}
+options="-o auto_cache,reconnect,follow_symlinks,defer_permissions,negative_vncache,volname=${DEST}"
 
+sshfs root@${DEST}:/ /Volumes/${DEST} ${options}
 
