@@ -13,7 +13,7 @@ if [ ! -d /Volumes/${DEST} ]; then
 	mkdir /Volumes/${DEST}
 fi
 
-options="-o auto_cache,reconnect,follow_symlinks,defer_permissions,negative_vncache,volname=${DEST}"
+options="-o auto_cache,reconnect,defer_permissions,negative_vncache,volname=${DEST}"
 
 sshfs ${DEST}:/ /Volumes/${DEST} ${options}
 
