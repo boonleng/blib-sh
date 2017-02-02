@@ -48,9 +48,25 @@ case $name in
 		;;
         "anastasia" )
                 mac="0c:c4:7a:34:9a:1c"
-                ip="192.168.2.255"
+                #ip="192.168.2.255"
+		ip="10.203.7.255"
                 port="11"
                 ;;
+	"deepsky" )
+		mac="00:0e:c6:88:db:b0"
+		ip="192.168.2.255"
+		port="11"
+		;;
+	"dodger" )
+		mac="00:e0:4c:a8:16:f8"
+		ip="192.168.2.255"
+		port="11"
+		;;
+	"marina" )
+		mac="0c:c4:7a:6f:25:ea"
+		ip="10.203.7.255"
+		port="11"
+		;;
 	* )
 		echo "Uknown machine"
 		exit
