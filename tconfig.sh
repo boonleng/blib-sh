@@ -33,5 +33,8 @@ while read line; do
 	 fi
 done < $HOME/bin/hosts.sshfs
 
+# Celeste
+str="$str -L 22000:localhost:22000"
+
 echo $str
 
