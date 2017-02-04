@@ -2,7 +2,7 @@
  
 # Foreground color (f) with black background and
 # Background color (b) with white foreground
-echo -en "Get foreground colors by \\\033[38;5;\033[4mnum\033[23;24m\t\t\t"
+echo -en "Get foreground colors by \\\033[38;5;\033[3;4mnum\033[23;24m\t\t\t"
 echo -e "Get background colors by \\\\033[48;5;\033[3;4mnum\033[23;24m\n"
 
 b=-2
