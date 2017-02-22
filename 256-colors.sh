@@ -2,11 +2,11 @@
  
 # Foreground color (f) with black background and
 # Background color (b) with white foreground
-echo -en "Get foreground colors by \\\033[38;5;\033[4mnum\033[23;24m\t\t\t"
-echo -e "Get background colors by \\\\033[48;5;\033[3;4mnum\033[23;24m\n"
+echo -en "Get foreground colors by \\\033[38;5;\033[3;4m(num)\033[23;24mm\t\t"
+echo -e "Get background colors by \\\\033[48;5;\033[3;4m(num)\033[23;24mm\n"
 
 b=-2
-for f in {-2..256} ; do
+for f in {-2..255} ; do
     if [ ${f} -ge 0 ]; then
         echo -en "\033[38;5;${f};48;5;232m  ${f}\t\033[0m"
     else

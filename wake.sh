@@ -48,7 +48,6 @@ case $name in
 		;;
         "anastasia" )
                 mac="0c:c4:7a:34:9a:1c"
-                #ip="192.168.2.255"
 		ip="10.203.7.255"
                 port="11"
                 ;;
@@ -73,6 +72,6 @@ case $name in
 		;;
 esac
 
-echo -e "Waking up \033[1;35m${name}\033[0m @ ${mac} @ \033[1;32m${ip}\033[0m:${port} ..."
+echo -e "Waking up \033[1;35m${name}\033[0m @ ${mac} @ \033[1;92m${ip}\033[0m:${port} ..."
 wol.pl $mac $ip $port
 
