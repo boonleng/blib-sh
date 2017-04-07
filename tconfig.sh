@@ -21,6 +21,7 @@ done
 str="$str -L 20004:rwv01.arrc.nor.ou.edu:22"
 str="$str -L 20005:10.197.14.59:22"
 str="$str -L 20006:10.197.14.53:22"
+str="$str -L 10000:10.203.6.180:10000"
 
 # Computers in PX-1000
 #for ((i=22000; i<22003; i++)); do
