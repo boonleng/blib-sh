@@ -1,28 +1,30 @@
 #!/bin/bash
 
-pid_file=${HOME}/Downloads/starbuck.pid
-pid_tiff=${HOME}/Downloads/tiffany.pid
-host=starbuck.nwc.ou.edu
+host1="starbuck.nwc.ou.edu"
+host2="-p 20000 localhost"
+#host2="-p 20002 localhost"
+tunnel1="~/starbuck.tunnel"
+tunnel2="~/tiffany.tunnel"
 
 px10k=10.203.7.6
 raxpol=10.203.6.141
 
-resp=$(ssh -S master-socket -O check ${host} 2>&1)
+resp=$(ssh -S ${tunnel1} -O check ${host1} 2>&1)
 if [[ ${resp} == Master* ]]; then
-	#pid=${resp##*pid=}
-	#pid=${pid%)*}
-	#echo "Found tunnel running with pid=${pid}"
-	resp=$(ssh -S tiffany-socket -O check -p 20002 localhost 2>&1)
+	resp=$(ssh -S ${tunnel2} -O check ${host2} 2>&1)
 	if [[ ${resp} == Master* ]]; then
-		ssh -S tiffany-socket -O exit -p 20002 localhost
+		echo -e "Closing \033[38;5;51m${tunnel2}\033[0m ..."
+		ssh -S ${tunnel2} -O exit ${host2}
 	fi
-	ssh -S master-socket -O exit ${host}
+	echo -e "Closing \033[38;5;82m${tunnel1}\033[0m ..."
+	ssh -S ${tunnel1} -O exit ${host1}
 else
 	extra=`tconfig.sh`
+	extra="${extra} -L 10000:${raxpol}:10000"
 	echo "Logging in with tunneling setup ..."
 	tput setaf 5
-	echo "${host} ${extra}"
-	ssh -M -S master-socket -fnNT ${extra} cheo4524@starbuck.nwc.ou.edu
+	echo -e "\033[38;5;82m${tunnel1}\033[38;5;225m ${extra}\033[0m"
+	ssh -M -S ${tunnel1} -fnNT ${extra} ${host1}
 
 	extra="-L 2203:${px10k}:2202"
 	extra="${extra} -L 2204:${px10k}:2204"
@@ -33,10 +35,7 @@ else
 	extra="${extra} -L 2206:${raxpol}:2202"
 	extra="${extra} -L 2207:${raxpol}:2204"
 	extra="${extra} -L 2208:${raxpol}:2205"
-	extra="${extra} -L 10000:${raxpol}:10000"
-	tput setaf 5
-	echo "tiffany: ${extra}"
-	tput sgr0
-	ssh -M -S tiffany-socket -fnNT ${extra} -p 20002 localhost
-	echo $! > ${pid_tiff}
+	echo -e "\033[38;5;51m${tunnel2}:\033[38;5;225m ${extra}\033[0m"
+	ssh -M -S ${tunnel2} -fnNT ${extra} ${host2}
 fi
+
