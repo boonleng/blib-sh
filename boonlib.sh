@@ -289,12 +289,11 @@ function remove_but_keep() {
 	log "remove_but_keep() -- $USER"
 	log "T:${TYP}  D:${DIR}  N:${NUM}  P:${PAT}"
 	count=0;
-	while read f; do
-		rm -rf $f
-		log "Removed $f"
+	while read line; do
+		rm -rf ${line}
+		log "Removed ${line}"
 		count=$((count+1))
-	done < <(find "${DIR}" -mindepth 1 -maxdepth 1 -type "${TYP}" -name "${PAT}" | sort |
-		sed -n -e :a -e "1,${NUM}!{P;N;D;};N;ba")
+	done < <(find "${DIR}" -mindepth 1 -maxdepth 1 -type "${TYP}" -name "${PAT}" | sort | sed -n -e :a -e "1,${NUM}!{P;N;D;};N;ba")
 	if [ "${count}" -gt 0 ]; then
 		if [ "${TYP}" == "d" ]; then
 			log "Removed ${count} folder(s)."
@@ -483,10 +482,33 @@ function remove_minutes_old_files() {
 		rm -f ${f}
 		log "Removed ${f}"
 		count=$((count+1))
-	done < <(find ${DIR} -maxdepth 2 -type f -mmin "+${NUM}" -name "${PAT}" | sort)
+	done < <(find "${DIR}" -maxdepth 2 -type f -mmin "+${NUM}" -name "${PAT}" | sort)
 	if [ "$count" -gt 0 ]; then
 		log "Removed $count file(s)."
 	else
 		log "Nothing removed."
 	fi
+}
+
+
+##########################################################
+#
+#  m o u n t _ h o s t
+#
+#     mount the host using SSHFS
+#
+#       o	mount_host HOST
+#
+#       o   relies on ~/.ssh/config
+#       o   custom hosts in /etc/hosts
+#
+##########################################################
+function mount_host() {
+	target=$1
+	if [ -d /Volumes/${target} ]; then
+		diskutil unmountDisk /Volumes/${target}
+	fi
+	echo "Mouting ${target} ..."
+	mkdir /Volumes/${target}
+	sshfs ${target}:/ /Volumes/${target} -o auto_cache,reconnect,defer_permissions,volname=${target}
 }
