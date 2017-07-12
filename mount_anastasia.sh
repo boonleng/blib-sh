@@ -9,9 +9,11 @@ else
 	DEST=$1
 fi
 
-if [ ! -d /Volumes/${DEST} ]; then
-	mkdir /Volumes/${DEST}
+if [ -d /Volumes${DEST} ]; then
+    diskutil unmountDisk /Volumes/${DESK}
 fi
+
+mkdir /Volumes/${DEST}
 
 options="-o auto_cache,reconnect,defer_permissions,negative_vncache,volname=${DEST}"
 
