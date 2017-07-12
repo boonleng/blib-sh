@@ -9,8 +9,8 @@ else
 	DEST=$1
 fi
 
-if [ -d /Volumes${DEST} ]; then
-    diskutil unmountDisk /Volumes/${DESK}
+if [ -d /Volumes/${DEST} ]; then
+    diskutil unmountDisk /Volumes/${DEST}
 fi
 
 mkdir /Volumes/${DEST}
