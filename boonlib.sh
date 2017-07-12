@@ -375,7 +375,7 @@ function check_process() {
 	if [ `uname` == "Darwin" ]; then
 		keywords="ruser,pid,stat,pcpu,pmem,command";
 	else
-		keywords="ruser,pid,stat,pcpu,pmem,nlwp,ucomm";
+		keywords="ruser,pid,stat,pcpu,pmem,etime,nlwp,cmd";
 	fi
 	ps ax -o $keywords | head -1
 	ps ax -o $keywords | grep -e "$USER" | grep -e "$arg" | grep -v "\(grep\|tail\|ssh\|bin/su\)"
