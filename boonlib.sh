@@ -510,5 +510,5 @@ function mount_host() {
 	fi
 	echo "Mouting ${target} ..."
 	mkdir /Volumes/${target}
-	sshfs ${target}:/ /Volumes/${target} -o auto_cache,reconnect,defer_permissions,volname=${target}
+	sshfs ${target}:/ /Volumes/${target} -o auto_cache,reconnect,defer_permissions,follow_symlinks,volname=${target}
 }

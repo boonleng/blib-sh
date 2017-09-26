@@ -76,6 +76,11 @@ case $name in
                 ip="192.168.2.255"
                 port="11"
                 ;;
+        "dawnwifi" )
+                mac="00:50:b6:d1:8a:ec"
+                ip="10.203.7.255"
+                port="11"
+                ;;
 	* )
 		echo "Uknown machine"
 		exit
