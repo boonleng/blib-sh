@@ -38,12 +38,12 @@ case $name in
 		;;
 	"celeste" )
 		mac="3c:07:54:56:8c:7f"
-		ip="192.168.1.102"
+		ip="10.203.7.255"
 		port="11"
 		;;
 	"tiffany" )
 		mac="00:3e:e1:bf:f4:cd"
-		ip="192.168.2.8"
+		ip="192.168.2.255"
 		port="11"
 		;;
         "anastasia" )
