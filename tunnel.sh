@@ -8,6 +8,7 @@ tunnel2="~/tiffany.tunnel"
 
 px10k=10.203.7.6
 raxpol=10.203.6.141
+px1000=10.203.6.248
 
 resp=$(ssh -S ${tunnel1} -O check ${host1} 2>&1)
 if [[ ${resp} == Master* ]]; then
@@ -26,15 +27,18 @@ else
 	echo -e "\033[38;5;82m${tunnel1}\033[38;5;225m ${extra}\033[0m"
 	ssh -M -S ${tunnel1} -fnNT ${extra} ${host1}
 
-	extra="-L 2203:${px10k}:2202"
-	extra="${extra} -L 2204:${px10k}:2204"
-	extra="${extra} -L 2205:${px10k}:2205"
+        extra=""
+	extra="${extra} -L 2201:${px1000}:2202"   # px1000 / azure
+	extra="${extra} -L 2202:${px1000}:2204"   # px1000 / burne
+	extra="${extra} -L 2203:${px10k}:2202"    # px10k / anastasia
+	extra="${extra} -L 2204:${px10k}:2206"    # px10k / belle
+	extra="${extra} -L 2205:${px10k}:2205"    # px10k / merida
 	extra="${extra} -L 10002:${px10k}:10000"
 	extra="${extra} -L 10080:${px10k}:8001"
 	extra="${extra} -L 18080:${px10k}:8080"
-	extra="${extra} -L 2206:${raxpol}:2202"
-	extra="${extra} -L 2207:${raxpol}:2204"
-	extra="${extra} -L 2208:${raxpol}:2205"
+	extra="${extra} -L 2206:${raxpol}:2202"   # raxpol / marina
+	extra="${extra} -L 2207:${raxpol}:2204"   # raxpol / peyton
+	extra="${extra} -L 2208:${raxpol}:2205"   # raxpol / talia
 	echo -e "\033[38;5;51m${tunnel2}:\033[38;5;225m ${extra}\033[0m"
 	ssh -M -S ${tunnel2} -fnNT ${extra} ${host2}
 fi
