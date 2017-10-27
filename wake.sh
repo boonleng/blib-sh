@@ -46,11 +46,11 @@ case $name in
 		ip="192.168.2.255"
 		port="11"
 		;;
-        "anastasia" )
-                mac="0c:c4:7a:34:9a:1c"
-		ip="10.203.7.255"
-                port="11"
-                ;;
+	"anastasia" )
+		mac="0c:c4:7a:34:9a:1c"
+		ip="192.168.2.255"
+		port="7"
+		;;
 	"deepsky" )
 		mac="00:0e:c6:88:db:b0"
 		ip="192.168.2.255"
@@ -66,7 +66,7 @@ case $name in
 		ip="10.203.7.255"
 		port="11"
 		;;
-        "morning" )
+	"morning" )
                 mac="00:50:b6:d1:8a:ec"
                 ip="192.168.2.255"
                 port="11"
