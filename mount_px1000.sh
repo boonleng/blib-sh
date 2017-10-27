@@ -18,6 +18,6 @@
 
 . ${HOME}/boonlib-sh/boonlib.sh
 
-mount_host azure
-mount_host burne
-mount_host woodstock
+#mount_host azure
+#mount_host burne
+mount_host anastasia
