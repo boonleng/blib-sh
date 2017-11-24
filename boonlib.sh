@@ -12,6 +12,24 @@
 #
 ##########################################################
 
+# Some common variables:
+# LOGFILE - A file to log important entries
+# VERBOSE - generate screen output
+# LOG_DATE_FORMAT - 2 = 11/23 10:40:44 PM
+#                 - 1 = 22:40:44
+
+if [ -z ${LOGFILE} ]; then
+	LOGFILE="${HOME}/boonlib.log"
+fi
+
+if [ -z ${VERBOSE} ]; then
+	VERBOSE=0
+fi
+
+if [ -z ${LOG_DATE_FORMAT} ]; then
+	LOG_DATE_FORMAT=2
+fi
+
 ##########################################################
 #
 #  l o g
@@ -22,24 +40,25 @@
 #
 ##########################################################
 function log() {
-	if [ -z "$1" ]; then return; fi
-	if [ -z "$LOGFILE" ]; then
-		LOGFILE="$HOME/boonlib.log"
-		log $1
-		log "LOGFILE undefined. Using LOGFILE=$LOGFILE"
-		return
-	fi
+	if [ -z "${1}" ]; then return; fi
 	log_dir=${LOGFILE%/*}
-	if [ "$log_dir" == "$LOGFILE" ]; then log_dir=""; fi
-	if [[ ! -z "$log_dir" &&  ! -d "$log_dir" ]]; then
-		mkdir -p $log_dir;
+	if [ ${log_dir} == ${LOGFILE} ]; then log_dir=""; fi
+	if [[ ! -z ${log_dir} &&  ! -d ${log_dir} ]]; then
+		mkdir -p ${log_dir};
 	fi
-	if [[ ! -z "$DEBUG" && "$DEBUG" == "1" ]]; then
-		echo "`date '+%m/%d %r'` : $@"
+	if [ -z ${VERBOSE} ]; then VERBOSE=0; fi
+	if [ ${LOG_DATE_FORMAT} == "2" ]; then
+		echo "$(date '+%m/%d %r') : $@" >> $LOGFILE
+		if [ ${VERBOSE} == "1" ]; then
+			echo "$(date '+%m/%d %r') : $@"
+		fi
+	else
+		echo "$(date +%T) : $@" >> $LOGFILE
+		if [ ${VERBOSE} == "1" ]; then
+			echo "$(date +%T) : $@"
+		fi
 	fi
-	echo "`date '+%m/%d %r'` : $@" >> $LOGFILE
 }
-
 
 ##########################################################
 #
@@ -51,23 +70,9 @@ function log() {
 #
 ##########################################################
 function slog() {
-	if [ -z "$LOGFILE" ]; then
-		LOGFILE="$HOME/boonlib.log"
-		log $1
-		log "LOGFILE undefined. Using LOGFILE=$LOGFILE"
-		return
-	fi
-	log_dir=${LOGFILE%/*}
-	if [ "$log_dir" == "$LOGFILE" ]; then log_dir=""; fi
-	if [[ ! -z "$log_dir" &&  ! -d "$log_dir" ]]; then
-		mkdir -p $log_dir;
-	fi
-	if [[ ! -z "$DEBUG" && "$DEBUG" == "1" ]]; then
-		echo "`date '+%T'` : $@"
-	fi
-	echo "`date '+%T'` : $@" >> $LOGFILE
+	LOG_DATE_FORMAT=1
+	log $@
 }
-
 
 ##########################################################
 #
