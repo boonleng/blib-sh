@@ -33,12 +33,22 @@ fi
 ##########################################################
 #
 #  l o g
+#  s l o g
 #
-#     appends the message in LOGFILE
+#     appends the message in LOGFILE using date format 
+#     specified by LOG_DATE_FORMAT. If LOG_DATE_FORMAT=1,
+#     the date is short in 24-hr format, otherwise, the
+#     long format with day is used
 #
 #       o  log MESSAGE
+#       o  slog MESSAGE
 #
 ##########################################################
+function slog() {
+	LOG_DATE_FORMAT=1
+	log $@
+}
+
 function log() {
 	if [ -z "${1}" ]; then return; fi
 	log_dir=${LOGFILE%/*}
@@ -60,19 +70,6 @@ function log() {
 	fi
 }
 
-##########################################################
-#
-#  s l o g
-#
-#     appends the message in LOGFILE, short timestamp
-#
-#       o  log MESSAGE
-#
-##########################################################
-function slog() {
-	LOG_DATE_FORMAT=1
-	log $@
-}
 
 ##########################################################
 #
