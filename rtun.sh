@@ -8,7 +8,7 @@ LOGFILE=$HOME/log/rtun.log
 USERHOST="cheo4524@starbuck.nwc.ou.edu"
 
 if [[ $HOSTNAME == "cerulean.local" ]]; then
-	COMMAND="ssh -f -N -R 20000:localhost:22 -R 55900:localhost:5900 -R 20001:morning.local:22 -R 55901:morning.local:5900 -R 20002:tiffany.local:22 -R 55902:tiffany.local:5900 -R 20003:10.203.7.76:22 $USERHOST >/dev/null 2>&1"
+	COMMAND="ssh -f -N -R 20000:localhost:22 -R 55900:localhost:5900 -R 20001:dawn.local:22 -R 55901:dawn.local:5900 -R 20002:tiffany.local:22 -R 55902:tiffany.local:5900 -R 20003:dodger.local:22 -R 55903:dodger.local:5900 $USERHOST >/dev/null 2>&1"
 	TEST="ssh $USERHOST netstat -an | egrep "tcp.*:20000.*LISTEN" >/dev/null 2>&1"
 elif [[ $HOSTNAME == "celeste.local" ]]; then
 	COMMAND="ssh -f -N -R 22000:localhost:22 -R 22001:cerulean.local:22 $USERHOST >/dev/null 2>&1"

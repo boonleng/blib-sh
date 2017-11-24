@@ -21,3 +21,5 @@ deviceName=${deviceName%% *}
 echo -e "Creating \033[1;35m${volume}\033[0m at \033[1;33m${deviceName}\033[0m ..."
 
 diskutil eraseVolume HFS+ ${volume} ${deviceName}
+chmod g+w ${volume}
+
