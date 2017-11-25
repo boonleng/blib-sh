@@ -536,7 +536,9 @@ function check_path() {
 	if [ ! -d ${1} ]; then
 		eecho "Path ${1} does not exist"
 	fi
-	if [ -z $(mount | grep "${1}") ]; then
+	if [[ -z $(mount | grep ${1}) ]]; then
 		eecho "Mount point ${1} does not exist"
+	else
+		log "Path ${1} okay"
 	fi
 }
