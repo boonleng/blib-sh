@@ -49,6 +49,20 @@ function slog() {
 	log $@
 }
 
+function decho() {
+	# Direct echo to file and screen if VERBOSE is set
+	echo $@ >> ${LOGFILE}
+	if [ ${VERBOSE} == "1" ]; then
+		echo $@
+	fi
+}
+
+function eecho() {
+	# Direct echo to file and screen as error out.
+	echo $@ >> ${LOGFILE}
+	echo $@ 1>&2
+}
+
 function log() {
 	if [ -z "${1}" ]; then return; fi
 	log_dir=${LOGFILE%/*}
@@ -58,15 +72,9 @@ function log() {
 	fi
 	if [ -z ${VERBOSE} ]; then VERBOSE=0; fi
 	if [ ${LOG_DATE_FORMAT} == "2" ]; then
-		echo "$(date '+%m/%d %r') : $@" >> $LOGFILE
-		if [ ${VERBOSE} == "1" ]; then
-			echo "$(date '+%m/%d %r') : $@"
-		fi
+		decho "$(date '+%m/%d %r') : $@"
 	else
-		echo "$(date +%T) : $@" >> $LOGFILE
-		if [ ${VERBOSE} == "1" ]; then
-			echo "$(date +%T) : $@"
-		fi
+		decho "$(date +%T) : $@"
 	fi
 }
 
@@ -513,4 +521,22 @@ function mount_host() {
 	echo "Mouting ${target} ..."
 	mkdir /Volumes/${target}
 	sshfs ${target}:/ /Volumes/${target} -o auto_cache,reconnect,defer_permissions,follow_symlinks,volname=${target}
+}
+
+##########################################################
+#
+#  c h e c k _ p a t h
+#
+#     checks if the path exist
+#
+#       o	check_path HOST
+#
+##########################################################
+function check_path() {
+	if [ ! -d ${1} ]; then
+		eecho "Path ${1} does not exist"
+	fi
+	if [ -z $(mount | grep "${1}") ]; then
+		eecho "Mount point ${1} does not exist"
+	fi
 }
