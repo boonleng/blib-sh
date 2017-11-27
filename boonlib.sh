@@ -519,7 +519,7 @@ function mount_host() {
 		diskutil unmountDisk /Volumes/${target}
 	fi
 	echo "Mouting ${target} ..."
-	mkdir /Volumes/${target}
+	mkdir -p /Volumes/${target}
 	sshfs ${target}:/ /Volumes/${target} -o auto_cache,reconnect,defer_permissions,follow_symlinks,volname=${target}
 }
 
