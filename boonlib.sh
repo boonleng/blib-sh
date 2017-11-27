@@ -46,21 +46,21 @@ fi
 ##########################################################
 function slog() {
 	LOG_DATE_FORMAT=1
-	log $@
+	log "$@"
 }
 
 function decho() {
 	# Direct echo to file and screen if VERBOSE is set
-	echo $@ >> ${LOGFILE}
+	echo "$@" >> ${LOGFILE}
 	if [ ${VERBOSE} == "1" ]; then
-		echo $@
+		echo "$@"
 	fi
 }
 
 function eecho() {
 	# Direct echo to file and screen as error out.
-	echo $@ >> ${LOGFILE}
-	echo $@ 1>&2
+	echo "$@" >> ${LOGFILE}
+	echo "$@" 1>&2
 }
 
 function log() {
@@ -300,10 +300,10 @@ function remove_but_keep() {
 	log "T:${TYP}  D:${DIR}  N:${NUM}  P:${PAT}"
 	count=0;
 	while read line; do
-		rm -rf ${line}
+		#rm -rf ${line}
 		log "Removed ${line}"
 		count=$((count+1))
-	done < <(find "${DIR}" -mindepth 1 -maxdepth 1 -type "${TYP}" -name "${PAT}" | sort | sed -n -e :a -e "1,${NUM}!{P;N;D;};N;ba")
+	done < <(find "${DIR}" -follow -mindepth 1 -maxdepth 1 -type "${TYP}" -name "${PAT}" | sort | sed -n -e :a -e "1,${NUM}!{P;N;D;};N;ba")
 	if [ "${count}" -gt 0 ]; then
 		if [ "${TYP}" == "d" ]; then
 			log "Removed ${count} folder(s)."
@@ -536,9 +536,56 @@ function check_path() {
 	if [ ! -d ${1} ]; then
 		eecho "Path ${1} does not exist"
 	fi
-	if [[ -z $(mount | grep ${1}) ]]; then
+	if [[ -z $(/sbin/mount | grep ${1}) ]]; then
 		eecho "Mount point ${1} does not exist"
 	else
 		log "Path ${1} okay"
 	fi
+}
+
+##########################################################
+#
+#  r e m o v e _ o l d _ l o g s
+#
+#     remove old log files that are in the patterns of:
+#
+#       o   cleanup-20171124.log
+#       o   cleanup-20171125.log
+#       o   cleanup-20171126.log
+#       o   ...
+#       o   stitch-figure-20171124.log
+#       o   stitch-figure-20171125.log
+#       o   stitch-figure-20171126.log
+#       o   ...
+#
+#       o   remove_old_logs ${HOME}/logs 30
+#
+##########################################################
+function remove_old_logs() {
+	if [ -z ${1} ]; then
+		echo "Must supply at least a path." 2>&1
+		exit
+	else
+		logPath=${1}
+	fi
+	if [ -z ${2} ]; then
+		filesToKeep=7
+	else
+		filesToKeep=${2}
+	fi
+	prefixes=()
+	for file in ${logPath}/*.log; do
+		file=${file%.log}
+		file=${file##*/}
+		file=${file%%-*}
+		prefixes+=(${file})
+	done
+	while read prefix; do
+		if [ ${VERBOSE} -gt 0 ]; then
+			echo "PATH:${logPath}  KEEP:${filesToKeep}  PATT:${prefix}*"
+		fi
+		set -f
+		remove_files_but_keep ${logPath} ${filesToKeep} ${prefix}'*'
+		set +f
+	done < <(echo ${prefixes[@]} | tr ' ' '\n' | sort -u)
 }
