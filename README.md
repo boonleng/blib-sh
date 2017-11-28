@@ -8,23 +8,23 @@ boonlib.sh
 ----------
 This is a collection of BASH functions, mostly for handling some form of automation for time-scheduled jobs. Here is a summary of the functions within the collection:
 
-- [`log()`](#log)
-- [`slog()`](#slog)
-- [`num2str3()`](#num2str)
-- [`file_manager()`](#file_manager)
-- [`remove_files_but_keep()`](#remove_files_but_keep)
-- [`remove_folders_but_keep()`](#remove_folders_but_keep)
-- [`remove_minutes_old_files()`](#remove_minutes_old_files)
-- [`remove_empty_dir()`](#remove_empty_dir)
-- [`warn_if_low()`](#warn_if_low)
-- [`check_process()`](#check_process)
-- [`fecho()`](#fecho)
-- [`textout()`](#textout)
-- [`headtail()`](#headtail)
-- [`remove_minutes_old_files()`](#remove_minutes_old_files)
-- [`mount_host()`](#mount_host)
-- [`check_path()`](#check_path)
-- [`remove_old_logs()`](#remove_old_logs)
+- `log()`
+- `slog()`
+- `num2str3()`
+- `file_manager()`
+- `remove_files_but_keep()`
+- `remove_folders_but_keep()`
+- `remove_minutes_old_files()`
+- `remove_empty_dir()`
+- `warn_if_low()`
+- `check_process()`
+- `fecho()`
+- `textout()`
+- `headtail()`
+- `remove_minutes_old_files()`
+- `mount_host()`
+- `check_path()`
+- `remove_old_logs()`
 
 [More on boonlib.sh](#more-on-boonlibsh) ...
 
@@ -71,7 +71,7 @@ A collection of SSH tunnel set up parameters for pulling reverse tunnel connecti
 
 
 wake.sh
------------------------
+-------
 Wake up a machine in LAN. This is a convenient function to wake up several computers by name. It may not work for you.
 
 #### Syntax:
@@ -312,8 +312,8 @@ removes files in a folder that are older than a specified age in minutes and mat
 
     remove_minutes_old_files DIR MINUTES [PATTERN]
     
-where PATTERN is assumed to be *.tgz if not supplied.
-    
+where PATTERN is assumed to be `*.tgz` if not supplied.
+
 ##### Example:
 
     remove_minutes_old_files /home/ldm/data 86400 *.nc
@@ -347,14 +347,14 @@ checks if the path exist
 remove old log files that are in the patterns of:
 
 ```shell
-    cleanup-20171124.log
-    cleanup-20171125.log
-    cleanup-20171126.log
-    ...
-    stitch-figure-20171124.log
-    stitch-figure-20171125.log
-    stitch-figure-20171126.log
-    ...
+cleanup-20171124.log
+cleanup-20171125.log
+cleanup-20171126.log
+...
+stitch-figure-20171124.log
+stitch-figure-20171125.log
+stitch-figure-20171126.log
+...
 ```
 
 ##### Syntax:
