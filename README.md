@@ -21,6 +21,10 @@ This is a collection of BASH functions, mostly for handling some form of automat
 - [`fecho()`](#fecho)
 - [`textout()`](#textout)
 - [`headtail()`](#headtail)
+- [`remove_minutes_old_files()`](#remove_minutes_old_files)
+- [`mount_host()`](#mount_host)
+- [`check_path()`](#check_path)
+- [`remove_old_logs()`](#remove_old_logs)
 
 [More on boonlib.sh](#more-on-boonlibsh) ...
 
@@ -95,6 +99,11 @@ A collection of convenient functions:
 - [`fecho()`](#fecho)
 - [`textout()`](#textout)
 - [`headtail()`](#headtail)
+- [`remove_minutes_old_files()`](#remove_minutes_old_files)
+- [`mount_host()`](#mount_host)
+- [`check_path()`](#check_path)
+- [`remove_old_logs()`](#remove_old_logs)
+
 
 ### Examples
 Some functions are better explained with examples so here they are:
@@ -238,12 +247,14 @@ checks for processes using ps and grep
 
 produces output
 
-	Processes                                                                     |
-	=========                                                                     |
-	RUSER      PID STAT %CPU %MEM NLWP COMMAND                                    |
-	boonleng 32327 Sl    0.1  0.0    2 iqc                                        |
-	boonleng 32330 Sl    0.1  0.0    4 iqd                                        |
-	boonleng 32333 Sl    0.0  0.0    3 rcc                                        |
+```shell
+Processes                                                                     |
+=========                                                                     |
+RUSER      PID STAT %CPU %MEM NLWP COMMAND                                    |
+boonleng 32327 Sl    0.1  0.0    2 iqc                                        |
+boonleng 32330 Sl    0.1  0.0    4 iqd                                        |
+boonleng 32333 Sl    0.0  0.0    3 rcc                                        |
+```
 
 #### `textout()`
 prints out the piped-in text with color and title
@@ -258,12 +269,14 @@ prints out the piped-in text with color and title
 
 produces output
 
-	RCC                                                                           |
-	===                                                                           |
-	12:24:39 : [RCC]       00 <Kate>: 108-'l' (1)                                 |
-	12:24:39 : [RCC]    From RCC/LCC: ACK. LCC connected.                         |
-	12:24:39 : [RCC] LCC connected.                                               |
-	12:24:58 : [RCC]       00 <Kate>: Hangging up...  ST:Inactive                 |
+```shell
+RCC                                                                           |
+===                                                                           |
+12:24:39 : [RCC]       00 <Kate>: 108-'l' (1)                                 |
+12:24:39 : [RCC]    From RCC/LCC: ACK. LCC connected.                         |
+12:24:39 : [RCC] LCC connected.                                               |
+12:24:58 : [RCC]       00 <Kate>: Hangging up...  ST:Inactive                 |
+```
 
 #### `headtail()`
 shows the head and tail portions of a file list of a folder
@@ -278,12 +291,76 @@ shows the head and tail portions of a file list of a folder
 	
 produces
 
-	/Users/boonleng/Downloads (      16 --> 59G)                                  |
-	============================================                                  |
-	drwx------    3 boonleng  staff   102B Apr 16  2014 About Downloads.lpdf      |
-	-rw-r--r--    1 boonleng  staff   1.1M Nov 25  2013 Scans.pdf                 |
-	-rw-r--r--    1 boonleng  staff   885M Nov 30  2014 simradar.mp4              |
-	:                                                                             |
-	-rw-r--r--    1 boonleng  staff    33K Nov 17 22:03 nvrambak.bin              |
-	-rw-r--r--    1 boonleng  staff   621K Nov  8 09:51 opencl-1-2-quick-reference|
-	drwxr-xr-x    7 boonleng  staff   238B Nov 25 21:22 tables                    |
+```shell
+/Users/boonleng/Downloads (      16 --> 59G)                                  |
+============================================                                  |
+drwx------    3 boonleng  staff   102B Apr 16  2014 About Downloads.lpdf      |
+-rw-r--r--    1 boonleng  staff   1.1M Nov 25  2013 Scans.pdf                 |
+-rw-r--r--    1 boonleng  staff   885M Nov 30  2014 simradar.mp4              |
+:                                                                             |
+-rw-r--r--    1 boonleng  staff    33K Nov 17 22:03 nvrambak.bin              |
+-rw-r--r--    1 boonleng  staff   621K Nov  8 09:51 opencl-1-2-quick-reference|
+drwxr-xr-x    7 boonleng  staff   238B Nov 25 21:22 tables                    |
+```
+	
+#### `remove_minutes_old_files()`
+removes files in a folder that are older than a specified age in minutes and match a given pattern.
+
+##### Syntax:
+
+    remove_minutes_old_files DIR MINUTES [PATTERN]
+    
+where PATTERN is assumed to be *.tgz if not supplied.
+    
+##### Example:
+
+    remove_minutes_old_files /home/ldm/data 86400 *.nc
+    
+#### `mount_host()`
+mount the host using SSHFS
+
+##### Syntax:
+
+    mount_host HOST_NAME
+
+##### Examples:
+
+    mount_host anastasia
+    mount_host cerulean.local
+    mount_host 10.203.6.227
+
+#### `check_path()`
+checks if the path exist
+
+##### Syntax:
+
+    check_path PATH
+
+##### Example:
+
+    check_path /Volumes/Data
+
+#### `remove_old_logs()`
+
+remove old log files that are in the patterns of:
+
+```shell
+    cleanup-20171124.log
+    cleanup-20171125.log
+    cleanup-20171126.log
+    ...
+    stitch-figure-20171124.log
+    stitch-figure-20171125.log
+    stitch-figure-20171126.log
+    ...
+```
+
+##### Syntax:
+
+    remove_old_logs LOG_PATH [FILES_TO_KEEP]
+    
+where FILES_TO_KEEP is assumed to be 7 if not supplied.
+
+##### Example:
+
+    remove_old_logs ${HOME}/logs 30
