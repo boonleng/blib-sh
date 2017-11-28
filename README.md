@@ -38,13 +38,13 @@ A script that uses a Mac OS X built-in functions create a RAM disk.
 	makeramdisk.sh SIZE [NAME]
 
 
-mount_anastasia.sh
-------------------
+mount_host.sh
+-------------
 This script uses `sshfs` to mount a LAN machine that can be reached with .local addressing. Example usage is `mount_anastasia.sh deepsky` to mount the root drive with partition name `deepsky` of the machine `deepsky.local`. This naming scheme is what I usually practice. Why Anastasia? Anastasia is the main host of PX-10,000 which I use SSHFS the most.
 
 #### Syntax:
 
-	mount_anastasia.sh [COMPUTER_NAME]
+	mount_host.sh [COMPUTER_NAME]
 
 
 ncdc.sh
@@ -84,6 +84,8 @@ More on boonlib.sh
 
 Some global variables for general purposes:
 - `LOGFILE` for logging.
+- `VERBOSE` for printing out more information on screen
+- `LOG_DATE_FORMAT` for short (1) or long (2) format time stamp
 
 A collection of convenient functions:
 - [`log()`](#log)
