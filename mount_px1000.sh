@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. ${HOME}/boonlib-sh/boonlib.sh
+. ${HOME}/blib-sh/blib.sh
 
 mount_host anastasia
 mount_host burne

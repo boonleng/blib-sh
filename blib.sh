@@ -19,7 +19,7 @@
 #                 - 1 = 22:40:44
 
 if [ -z ${LOGFILE} ]; then
-	LOGFILE="${HOME}/boonlib.log"
+	LOGFILE="${HOME}/blib.log"
 fi
 
 if [ -z ${VERBOSE} ]; then

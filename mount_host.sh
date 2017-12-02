@@ -9,7 +9,7 @@ else
 	DEST=${1}
 fi
 
-. ${HOME}/boonlib-sh/boonlib.sh
+. ${HOME}/blib-sh/blib.sh
 
 mount_host ${DEST}
 

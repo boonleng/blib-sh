@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. $HOME/bin/boonlib.sh
+. $HOME/blib-sh/blib.sh
 
 LOGFILE=$HOME/log/rtun.log
 
