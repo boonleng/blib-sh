@@ -4,8 +4,8 @@ Boonleng's Shell Script Library
 Over the years, I have written some functions to help making coding easier. I have used them in many servers so I thought it might be a good idea to collect these functions into a collection so I can just source this and have all the functions available without a bunch of copy and paste. Maybe it can help someone too.
 
 
-boonlib.sh
-----------
+blib.sh
+-------
 This is a collection of BASH functions, mostly for handling some form of automation for time-scheduled jobs. Here is a summary of the functions within the collection:
 
 - `log()`
@@ -26,7 +26,7 @@ This is a collection of BASH functions, mostly for handling some form of automat
 - `check_path()`
 - `remove_old_logs()`
 
-[More on boonlib.sh](#more-on-boonlibsh) ...
+[More on blib.sh](#more-on-blibsh) ...
 
 
 makeramdisk.sh
@@ -79,8 +79,8 @@ Wake up a machine in LAN. This is a convenient function to wake up several compu
 	wake.sh COMPUTER_NAME
 
 
-More on boonlib.sh
-==================
+More on blib.sh
+===============
 
 Some global variables for general purposes:
 - `LOGFILE` for logging.
