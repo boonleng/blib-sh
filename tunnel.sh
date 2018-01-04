@@ -21,19 +21,18 @@ if [[ ${resp} == Master* ]]; then
 	ssh -S ${tunnel1} -O exit ${host1}
 else
 	extra=`tconfig.sh`
-	extra="${extra} -L 10000:${raxpol}:10000"
+	extra="${extra} -L 10000:${px1000}:10000"
 	echo "Logging in with tunneling setup ..."
 	tput setaf 5
 	echo -e "\033[38;5;82m${tunnel1}\033[38;5;225m ${extra}\033[0m"
 	ssh -M -S ${tunnel1} -fnNT ${extra} ${host1}
 
         extra=""
-	extra="${extra} -L 2201:${px1000}:2202"   # px1000 / azure
-	extra="${extra} -L 2202:${px1000}:2204"   # px1000 / burne
-	extra="${extra} -L 2203:${px10k}:2202"    # px10k / anastasia
-	extra="${extra} -L 2204:${px10k}:2206"    # px10k / belle
-	extra="${extra} -L 2205:${px10k}:2205"    # px10k / merida
-	extra="${extra} -L 10002:${px10k}:10000"
+	extra="${extra} -L 2201:${px1000}:2201"   # px1000 / anastasia
+	extra="${extra} -L 2202:${px1000}:2202"   # px1000 / burne
+	extra="${extra} -L 2203:${px1000}:2203"   # px1000 / azure
+	extra="${extra} -L 2204:${px1000}:2204"   # px1000 /
+	extra="${extra} -L 2205:${px1000}:2205"   # px1000 / 
 	extra="${extra} -L 10080:${px10k}:8001"
 	extra="${extra} -L 18080:${px10k}:8080"
 	extra="${extra} -L 2206:${raxpol}:2202"   # raxpol / marina

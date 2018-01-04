@@ -29,6 +29,10 @@ This is a collection of BASH functions, mostly for handling some form of automat
 [More on blib.sh](#more-on-blibsh) ...
 
 
+256-color.sh
+------------
+A script that shows all the color codes for terminal.
+
 makeramdisk.sh
 --------------
 A script that uses a Mac OS X built-in functions create a RAM disk.
@@ -36,6 +40,21 @@ A script that uses a Mac OS X built-in functions create a RAM disk.
 #### Syntax:
 
 	makeramdisk.sh SIZE [NAME]
+
+
+mount_ntfs.sh
+-------------
+A simplified way to mount an remote NTFS path
+
+#### Syntax:
+
+    mount_ntfs.sh REMOTE_ADDRESS_AND_PATH
+    
+#### Example:
+
+    mount_ntfs.sh 10.203.1.100:/D
+
+mounts the shared folder D on the machine 10.203.1.100 to /Volumes/ntfs
 
 
 mount_host.sh
@@ -63,6 +82,11 @@ A command line to remove extra attributes, which can be seen using `ls -l@`. Som
 #### Syntax:
 
 	rmtags.sh FILES
+
+
+rtun.sh
+-------
+Reverse tunnel creation through NWC's Bastian host. I almost don't want to document this. Don't use this directly. Read it, understand it and modify it for your own usage.
 
 
 tconfig.sh
