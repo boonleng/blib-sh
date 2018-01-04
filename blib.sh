@@ -30,11 +30,10 @@ if [ -z ${LOG_DATE_FORMAT} ]; then
 	LOG_DATE_FORMAT=2
 fi
 
-if [ ! -z ${TERM} ]; then
-	echo TERM=${TERM}
-	SCREEN_WIDTH=$(($(tput cols) - 1))
-else
+if [[ -z ${TERM} || ${TERM} == dumb ]]; then
 	SCREEN_WIDTH=79
+else
+	SCREEN_WIDTH=$(($(tput cols) - 1))
 fi
 
 ##########################################################
@@ -437,8 +436,9 @@ function textout() {
 			magenta)   c=35;;
 			cyan)      c=36;;
 			white)     c=37;;
-			gold)      c=38;5;220;;
-			turquoise) c=38;5;85;;
+			gold)      c="38;5;220";;
+			lavender)  c="38;5;141";;
+			seagreen)  c="38;5;85";;
 			*)         c=$2;;
 		esac
 		echo -ne "\033[${c}m"
