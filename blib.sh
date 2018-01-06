@@ -306,7 +306,7 @@ function remove_but_keep() {
 	log "T:${TYP}  D:${DIR}  N:${NUM}  P:${PAT}"
 	count=0;
 	while read line; do
-		#rm -rf ${line}
+		rm -rf ${line}
 		log "Removed ${line}"
 		count=$((count+1))
 	done < <(find "${DIR}" -follow -mindepth 1 -maxdepth 1 -type "${TYP}" -name "${PAT}" | sort | sed -n -e :a -e "1,${NUM}!{P;N;D;};N;ba")
@@ -429,18 +429,19 @@ function textout() {
 	#   tput setab 4
 	if [ "${#}" -ge 2 ]; then
 		case "$2" in
-			red)       c=31;;
-			green)     c=32;;
-			yellow)    c=33;;
-			blue)      c=34;;
-			magenta)   c=35;;
-			cyan)      c=36;;
-			white)     c=37;;
-			gold)      c="38;5;220";;
-			lavender)  c="38;5;141";;
-			skyblue)   c="38;5;117";;
-			seagreen)  c="38;5;85";;
-			*)         c=$2;;
+			red)        c=31;;
+			green)      c=32;;
+			yellow)     c=33;;
+			blue)       c=34;;
+			magenta)    c=35;;
+			cyan)       c=36;;
+			white)      c=37;;
+			gold)       c="38;5;220";;
+			lavender)   c="38;5;141";;
+			skyblue)    c="38;5;117";;
+			seagreen)   c="38;5;85";;
+			steelblue)  c="38;5;81";;
+			*)          c=$2;;
 		esac
 		echo -ne "\033[${c}m"
 	fi
