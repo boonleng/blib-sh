@@ -2,7 +2,7 @@
 
 # The capacity in MB
 if [ -z "$1" ]; then
-	sizeInMB=512
+	sizeInMB=32
 else
 	sizeInMB=$1
 fi
