@@ -21,7 +21,7 @@ if [[ ${resp} == Master* ]]; then
 	ssh -S ${tunnel1} -O exit ${host1}
 else
 	extra=`tconfig.sh`
-	extra="${extra} -L 10000:${px1000}:10000"
+	extra="${extra} -L 10000:${raxpol}:10000"
 	echo "Logging in with tunneling setup ..."
 	tput setaf 5
 	echo -e "\033[38;5;82m${tunnel1}\033[38;5;225m ${extra}\033[0m"
@@ -35,9 +35,9 @@ else
 	extra="${extra} -L 2205:${px1000}:2205"   # px1000 / 
 	extra="${extra} -L 10080:${px10k}:8001"
 	extra="${extra} -L 18080:${px10k}:8080"
-	extra="${extra} -L 2206:${raxpol}:2202"   # raxpol / marina
-	extra="${extra} -L 2207:${raxpol}:2204"   # raxpol / peyton
-	extra="${extra} -L 2208:${raxpol}:2205"   # raxpol / talia
+	extra="${extra} -L 2206:${raxpol}:2201"   # raxpol / marina
+	extra="${extra} -L 2207:${raxpol}:2202"   # raxpol / peyton
+	extra="${extra} -L 2208:${raxpol}:2203"   # raxpol / talia
 	echo -e "\033[38;5;51m${tunnel2}:\033[38;5;225m ${extra}\033[0m"
 	ssh -M -S ${tunnel2} -fnNT ${extra} ${host2}
 fi

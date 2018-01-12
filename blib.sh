@@ -30,6 +30,12 @@ if [ -z ${LOG_DATE_FORMAT} ]; then
 	LOG_DATE_FORMAT=2
 fi
 
+if [[ -z ${TERM} || ${TERM} == dumb ]]; then
+	SCREEN_WIDTH=79
+else
+	SCREEN_WIDTH=$(($(tput cols) - 1))
+fi
+
 ##########################################################
 #
 #  l o g
@@ -300,7 +306,7 @@ function remove_but_keep() {
 	log "T:${TYP}  D:${DIR}  N:${NUM}  P:${PAT}"
 	count=0;
 	while read line; do
-		#rm -rf ${line}
+		rm -rf ${line}
 		log "Removed ${line}"
 		count=$((count+1))
 	done < <(find "${DIR}" -follow -mindepth 1 -maxdepth 1 -type "${TYP}" -name "${PAT}" | sort | sed -n -e :a -e "1,${NUM}!{P;N;D;};N;ba")
@@ -403,8 +409,8 @@ function check_process() {
 ##########################################################
 function fecho() {
 	str="$@"
-	str="${str:0:78}"
-	printf "%-78s|\n" "$str"
+	str="${str:0:${SCREEN_WIDTH}}"
+	printf "%-${SCREEN_WIDTH}s|\n" "$str"
 }
 
 
@@ -422,22 +428,26 @@ function textout() {
 	#   tput bold
 	#   tput setab 4
 	if [ "${#}" -ge 2 ]; then
-#       tput setaf $2
 		case "$2" in
-			red)     c=1;;
-			green)   c=2;;
-			yellow)  c=3;;
-			blue)    c=4;;
-			magenta) c=5;;
-			cyan)    c=6;;
-			white)   c=7;;
-			*)       c=$2;;
+			red)        c=31;;
+			green)      c=32;;
+			yellow)     c=33;;
+			blue)       c=34;;
+			magenta)    c=35;;
+			cyan)       c=36;;
+			white)      c=37;;
+			gold)       c="38;5;220";;
+			lavender)   c="38;5;141";;
+			skyblue)    c="38;5;117";;
+			seagreen)   c="38;5;85";;
+			steelblue)  c="38;5;81";;
+			*)          c=$2;;
 		esac
-		echo -ne "\033[3${c}m"
+		echo -ne "\033[${c}m"
 	fi
 	len=${#1}
 	if [ "$#" -ge 1 ]; then
-		LINE="============================================"
+		LINE="======================================================="
 		fecho "${1}"
 		fecho "${LINE:0:$len}"
 	fi
