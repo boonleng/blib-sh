@@ -507,20 +507,24 @@ function remove_minutes_old_files() {
 #
 #     mount the host using SSHFS
 #
-#       o	mount_host HOST
+#       o	mount_host HOST VOLNAME
 #
 #       o   relies on ~/.ssh/config
 #       o   custom hosts in /etc/hosts
 #
 ##########################################################
 function mount_host() {
-	target=$1
+	target=${1}
 	if [ -d /Volumes/${target} ]; then
 		diskutil unmountDisk /Volumes/${target}
 	fi
-	echo "Mouting ${target} ..."
+    volname=${2}
+    if [ -z ${volname} ]; then
+        volname=${target}
+    fi
+	echo "Mouting ${target} as ${volname} ..."
 	mkdir -p /Volumes/${target}
-	sshfs ${target}:/ /Volumes/${target} -o auto_cache,reconnect,defer_permissions,follow_symlinks,volname=${target}
+	sshfs ${target}:/ /Volumes/${target} -o auto_cache,reconnect,defer_permissions,follow_symlinks,volname=${volname}
 }
 
 ##########################################################
