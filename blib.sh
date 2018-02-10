@@ -302,22 +302,26 @@ function remove_but_keep() {
 	DIR=$2; if [ -z "${DIR}" ]; then DIR="./"; fi
 	NUM=$3; if [ -z "${NUM}" ]; then NUM=1000; fi
 	PAT=$4; if [ -z "${PAT}" ]; then PAT='*'; fi
-	log "remove_but_keep() -- $USER"
-	log "T:${TYP}  D:${DIR}  N:${NUM}  P:${PAT}"
+	if [ "${VERBOSE}" -gt 0 ]; then
+		log "remove_but_keep() -- $USER"
+		log "T:${TYP}  D:${DIR}  N:${NUM}  P:${PAT}"
+	fi
 	count=0;
 	while read line; do
 		rm -rf ${line}
-		log "Removed ${line}"
+		if [ "${VERBOSE}" -gt 0 ]; then
+			log "Removed ${line}"
+		fi
 		count=$((count+1))
 	done < <(find "${DIR}" -follow -mindepth 1 -maxdepth 1 -type "${TYP}" -name "${PAT}" | sort | sed -n -e :a -e "1,${NUM}!{P;N;D;};N;ba")
 	if [ "${count}" -gt 0 ]; then
 		if [ "${TYP}" == "d" ]; then
-			log "Removed ${count} folder(s)."
+			log "T:${TYP}  D:${DIR}  N:${NUM}  P:${PAT} --  Removed ${count} folder(s)."
 		else
-			log "Removed ${count} files(s)."
+			log "T:${TYP}  D:${DIR}  N:${NUM}  P:${PAT} --  Removed ${count} files(s)."
 		fi
 	else
-		log "Nothing removed."
+		log "T:${TYP}  D:${DIR}  N:${NUM}  P:${PAT} --  Nothing removed."
 	fi
 }
 
