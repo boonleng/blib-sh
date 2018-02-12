@@ -58,7 +58,7 @@ function slog() {
 function decho() {
 	# Direct echo to file and screen if VERBOSE is set
 	echo "$@" >> ${LOGFILE}
-	if [ ${VERBOSE} == "1" ]; then
+	if [ ${VERBOSE} -gt 1 ]; then
 		echo "$@"
 	fi
 }
@@ -599,7 +599,7 @@ function remove_old_logs() {
 		prefixes+=(${file})
 	done
 	while read prefix; do
-		if [ ${VERBOSE} -gt 0 ]; then
+		if [ ${VERBOSE} -gt 1 ]; then
 			echo "PATH:${logPath}  KEEP:${filesToKeep}  PATT:${prefix}*"
 		fi
 		set -f
