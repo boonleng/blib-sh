@@ -304,7 +304,6 @@ function remove_but_keep() {
 	PAT=$4; if [ -z "${PAT}" ]; then PAT='*'; fi
 	if [ "${VERBOSE}" -gt 0 ]; then
 		log "remove_but_keep() -- $USER"
-		log "T:${TYP}  D:${DIR}  N:${NUM}  P:${PAT}"
 	fi
 	count=0;
 	while read line; do
