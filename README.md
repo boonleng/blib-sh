@@ -1,5 +1,5 @@
-Boonleng's Shell Script Library
-===============================
+blib-sh Boonleng's Shell Script Library
+===
 
 Over the years, I have written some functions to help making coding easier. I have used them in many servers so I thought it might be a good idea to collect these functions into a collection so I can just source this and have all the functions available without a bunch of copy and paste. Maybe it can help someone too.
 
@@ -28,6 +28,16 @@ This is a collection of BASH functions, mostly for handling some form of automat
 
 [More on blib.sh](#more-on-blibsh) ...
 
+Other Fun Shell Tools
+===
+These packages could make your shell experience more fun
+- `fortune`
+- `cowsay`
+- `lolcat`
+
+
+Detailed Description of blib-sh
+===
 
 256-color.sh
 ------------
