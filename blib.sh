@@ -534,7 +534,7 @@ function mount_host() {
     fi
 	echo "Mouting ${target} as ${volname} ..."
 	mkdir -p /Volumes/${target}
-	sshfs ${target}:/ /Volumes/${target} -o auto_cache,reconnect,defer_permissions,follow_symlinks,volname=${volname}
+	sshfs ${target}:/ /Volumes/${target} -o idmap=user,allow_other,defer_permissions,auto_cache,reconnect,follow_symlinks,volname=${volname}
 }
 
 ##########################################################
