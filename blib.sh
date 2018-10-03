@@ -537,7 +537,15 @@ function mount_host() {
     fi
 	echo "Mouting ${target} as ${volname} ..."
 	mkdir -p /Volumes/${target}
-	sshfs ${target}:/ /Volumes/${target} -o idmap=user,allow_other,defer_permissions,auto_cache,reconnect,follow_symlinks,volname=${volname}
+	if [ -z $(which sshfs) ]; then
+		echo -e "\033[38;5;214mSSHFS not installed.\033[0m"
+		echo ""
+		echo "To install:"
+		echo -e "\033[38;5;82mbrew cask install osxfuse\033[0m"
+		echo -e "\033[38;5;82mbrew install sshfs\033[0m"
+		exit
+	fi
+	sshfs ${target}:/ /Volumes/${target} -o idmap=user,allow_other,auto_cache,reconnect,follow_symlinks,volname=${volname}
 }
 
 ##########################################################
