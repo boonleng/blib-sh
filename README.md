@@ -4,8 +4,8 @@ blib-sh Boonleng's Shell Script Library
 Over the years, I have written some functions to help making coding easier. I have used them in many servers so I thought it might be a good idea to collect these functions into a collection so I can just source this and have all the functions available without a bunch of copy and paste. Maybe it can help someone too.
 
 
-blib.sh
--------
+# blib.sh
+
 This is a collection of BASH functions, mostly for handling some form of automation for time-scheduled jobs. Here is a summary of the functions within the collection:
 
 - `log()`
@@ -28,8 +28,17 @@ This is a collection of BASH functions, mostly for handling some form of automat
 
 [More on blib.sh](#more-on-blibsh) ...
 
-Other Fun Shell Tools
-===
+### Requirements
+
+SSHFS requires that FUSE framework and SSHFS tool are installed. On a Mac, they can be installed through Homebrew as
+
+```shell
+brew cask install osxfuse
+brew install sshfs
+```
+
+## Other Fun Shell Tools
+
 These packages could make your shell experience more fun
 - `fortune`
 - `cowsay`
