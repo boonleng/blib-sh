@@ -58,7 +58,7 @@ function slog() {
 function decho() {
 	# Direct echo to file and screen if VERBOSE is set
 	echo "$@" >> ${LOGFILE}
-	if [ ${VERBOSE} == "1" ]; then
+	if [ ${VERBOSE} -gt 1 ]; then
 		echo "$@"
 	fi
 }
@@ -304,7 +304,6 @@ function remove_but_keep() {
 	PAT=$4; if [ -z "${PAT}" ]; then PAT='*'; fi
 	if [ "${VERBOSE}" -gt 0 ]; then
 		log "remove_but_keep() -- $USER"
-		log "T:${TYP}  D:${DIR}  N:${NUM}  P:${PAT}"
 	fi
 	count=0;
 	while read line; do
@@ -538,7 +537,15 @@ function mount_host() {
     fi
 	echo "Mouting ${target} as ${volname} ..."
 	mkdir -p /Volumes/${target}
-	sshfs ${target}:/ /Volumes/${target} -o auto_cache,reconnect,defer_permissions,follow_symlinks,volname=${volname}
+	if [ -z $(which sshfs) ]; then
+		echo -e "\033[38;5;214mSSHFS not installed.\033[0m"
+		echo ""
+		echo "To install:"
+		echo -e "\033[38;5;82mbrew cask install osxfuse\033[0m"
+		echo -e "\033[38;5;82mbrew install sshfs\033[0m"
+		exit
+	fi
+	sshfs ${target}:/ /Volumes/${target} -o idmap=user,allow_other,auto_cache,reconnect,follow_symlinks,volname=${volname}
 }
 
 ##########################################################
@@ -599,7 +606,7 @@ function remove_old_logs() {
 		prefixes+=(${file})
 	done
 	while read prefix; do
-		if [ ${VERBOSE} -gt 0 ]; then
+		if [ ${VERBOSE} -gt 1 ]; then
 			echo "PATH:${logPath}  KEEP:${filesToKeep}  PATT:${prefix}*"
 		fi
 		set -f

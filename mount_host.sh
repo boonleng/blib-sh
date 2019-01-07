@@ -9,7 +9,15 @@ else
 	DEST=${1}
 fi
 
-. ${HOME}/blib-sh/blib.sh
+if [ ! -z ${BLIB_HOME} ]; then
+	. ${BLIB_HOME}/blib.sh
+elif [ -d ${HOME}/blib-sh/blib.sh ]; then
+	. ${HOME}/blib-sh/blib.sh
+elif [ -d ${HOME}/bin/blib.sh ]; then
+	. ${HOME}/bin/blib.sh
+else
+	echo "Unable to find blib-sh"
+	exit
+fi
 
 mount_host ${DEST}
-
