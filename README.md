@@ -87,7 +87,7 @@ This script uses `sshfs` to mount a LAN machine that can be reached with .local 
 
 ncdc.sh
 -------
-A script to use `wget` to download all the Level II `.gz` files in a URL, which came with the email that is sent out when the ordere from the NCDC archive is ready. This was specifically developed for downloading multiple Level-II files but it may work for other products. It is set up to traverse two levels down so files with URL `http://.../HASXXXX/0001/XXX_V06.gz`, `http://.../HASXXXX/0002/XXX_V06.gz`, etc. will be all be downloaded simply by providing the top level link received in the email. All files will be downloaded in `~/Downloads/HAS000000000/` where the the last path component represents the order number. If the destination folder exists, the script will not overwrite it but quit.
+A script to use `wget` to download all the WSR-88D (NEXRAD) Level II `.gz` files from a URL, which comes with an email that is sent out when the order from the NCDC archive is ready. This was specifically developed for downloading multiple Level-II files but it may work for other products. It is set up to traverse two levels down so files with URL `http://.../HASXXXX/0001/XXX_V06.gz`, `http://.../HASXXXX/0002/XXX_V06.gz`, etc. will all be downloaded simply by providing the top level link, which is supplied in the email. All files will be downloaded in `~/Downloads/HAS000000000/` where the the last path component represents the order number. If the destination folder exists, the script will not overwrite it but quit.
 
 #### Syntax:
 
