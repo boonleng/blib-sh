@@ -302,25 +302,18 @@ function remove_but_keep() {
 	DIR=$2; if [ -z "${DIR}" ]; then DIR="./"; fi
 	NUM=$3; if [ -z "${NUM}" ]; then NUM=1000; fi
 	PAT=$4; if [ -z "${PAT}" ]; then PAT='*'; fi
-	if [ "${VERBOSE}" -gt 0 ]; then
-		log "remove_but_keep() -- $USER"
-	fi
 	count=0;
 	while read line; do
 		rm -rf ${line}
-		if [ "${VERBOSE}" -gt 0 ]; then
+		if [ "${VERBOSE}" -gt 1 ]; then
 			log "Removed ${line}"
 		fi
 		count=$((count+1))
 	done < <(find "${DIR}" -follow -mindepth 1 -maxdepth 1 -type "${TYP}" -name "${PAT}" | sort | sed -n -e :a -e "1,${NUM}!{P;N;D;};N;ba")
-	if [ "${count}" -gt 0 ]; then
-		if [ "${TYP}" == "d" ]; then
-			log "T:${TYP}  D:${DIR}  N:${NUM}  P:${PAT} --  Removed ${count} folder(s)."
-		else
-			log "T:${TYP}  D:${DIR}  N:${NUM}  P:${PAT} --  Removed ${count} files(s)."
-		fi
+	if [ "${TYP}" == "d" ]; then
+		log "remove_but_keep()  ${USER}  D:${DIR}  T:${TYP}  N:${NUM}  P:${PAT} -- ${count} folders"
 	else
-		log "T:${TYP}  D:${DIR}  N:${NUM}  P:${PAT} --  Nothing removed."
+		log "remove_but_keep()  ${USER}  D:${DIR}  T:${TYP}  N:${NUM}  P:${PAT} -- ${count} files"
 	fi
 }
 
@@ -335,7 +328,7 @@ function remove_but_keep() {
 #
 ##########################################################
 function remove_empty_folders() {
-	log "remove_empty_folders -- ${1} -- ${USER}"
+	log "remove_empty_folders()  ${USER}  D:${1}"
 	log "`find -L ${1} -depth -type d -empty`"
 	find -L ${1} -depth -type d -empty -exec rmdir '{}' \;
 }
@@ -498,19 +491,14 @@ function remove_minutes_old_files() {
 	DIR=${1}; if [ -z "${DIR}" ]; then DIR="./"; fi
 	NUM=${2}; if [ -z "${NUM}" ]; then NUM=1440; fi
 	PAT=${3}; if [ -z "${PAT}" ]; then PAT='*.tgz'; fi
-	log "remove_old_files() -- ${USER}"
-	log "HOME:${DIR}  MIN:${NUM}  PAT:${PAT}"
+	#log "remove_old_files()  HOME:${DIR}  MIN:${NUM}  PAT:${PAT} -- ${USER}"
 	count=0
 	while read f; do
 		rm -f ${f}
 		log "Removed ${f}"
 		count=$((count+1))
 	done < <(find "${DIR}" -maxdepth 2 -type f -mmin "+${NUM}" -name "${PAT}" | sort)
-	if [ "$count" -gt 0 ]; then
-		log "Removed $count file(s)."
-	else
-		log "Nothing removed."
-	fi
+	log "remove_old_files()  ${USER}  D:${DIR}  A:${NUM}  P:${PAT} -- ${count} files"
 }
 
 
