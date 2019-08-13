@@ -428,8 +428,6 @@ function fecho() {
 #
 ##########################################################
 function textout() {
-	#   tput bold
-	#   tput setab 4
 	if [ "${#}" -ge 2 ]; then
 		case "$2" in
 			red)        c=31;;
@@ -457,7 +455,9 @@ function textout() {
 	cat - | while read line; do
 		fecho "${line}"
 	done
-	#tput sgr0
+	if [ "${#}" -ge 2 ]; then
+		echo -ne "\033[0m"
+	fi
 }
 
 
