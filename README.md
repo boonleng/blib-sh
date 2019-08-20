@@ -1,7 +1,7 @@
 blib-sh Boonleng's Shell Script Library
 ===
 
-Over the years, I have written some functions to help making coding easier. I have used them in many servers so I thought it might be a good idea to collect these functions into a collection so I can just source this and have all the functions available without a bunch of copy and paste. Maybe it can help someone too.
+Over the years, I have written a number functions to help making coding easier. I have used them in sparingly many machines, RedHat Linux, CentOS, Debian, macOS, etc. so I thought it might be a good idea to put these reusable functions into a collection so I can just source it and have all the functions available without a bunch of copy and paste. Perhaps the collection can be helpful to someone else too.
 
 
 # blib.sh
@@ -54,12 +54,13 @@ A script that shows all the color codes for terminal.
 
 makeramdisk.sh
 --------------
-A script that uses a Mac OS X built-in functions create a RAM disk.
+A script to create a RAM disk. On macOS, the RAM disk is created at /Volumes/RAMDisk through `diskutil`. On Linux, the RAM disk is created at /mnt/ramdisk through the utility `mount`.
 
 #### Syntax:
 
-	makeramdisk.sh SIZE [NAME]
-
+```shell
+makeramdisk.sh SIZE [NAME]
+```
 
 mount_ntfs.sh
 -------------
@@ -67,23 +68,28 @@ A simplified way to mount an remote NTFS path
 
 #### Syntax:
 
-    mount_ntfs.sh REMOTE_ADDRESS_AND_PATH
-    
+```shell
+mount_ntfs.sh REMOTE_ADDRESS_AND_PATH
+```
+
 #### Example:
 
-    mount_ntfs.sh 10.203.1.100:/D
+```shell
+mount_ntfs.sh 10.203.1.100:/D
+```
 
 mounts the shared folder D on the machine 10.203.1.100 to /Volumes/ntfs
 
 
 mount_host.sh
 -------------
-This script uses `sshfs` to mount a LAN machine that can be reached with .local addressing. Example usage is `mount_anastasia.sh deepsky` to mount the root drive with partition name `deepsky` of the machine `deepsky.local`. This naming scheme is what I usually practice. Why Anastasia? Anastasia is the main host of PX-10,000 which I use SSHFS the most.
+This script uses `sshfs` to mount a machine that can be reached with through SSH. Example usage is `mount_host.sh deepsky` to mount the root drive with partition name `deepsky` of the machine `deepsky` or `deepsky.local`. This naming scheme is what I usually practice.
 
 #### Syntax:
 
-	mount_host.sh [COMPUTER_NAME]
-
+```shell
+mount_host.sh [COMPUTER_NAME]
+```
 
 ncdc.sh
 -------
@@ -119,8 +125,9 @@ Wake up a machine in LAN. This is a convenient function to wake up several compu
 
 #### Syntax:
 
-	wake.sh COMPUTER_NAME
-
+```shell
+wake.sh COMPUTER_NAME
+```
 
 More on blib.sh
 ===============
@@ -158,16 +165,22 @@ logs an entry with timestamp.
 
 ##### Syntax:
 
-	log MESSAGE
+```
+log MESSAGE
+```
 
 ##### Example:
 
-	log "Hello World."
+```
+log "Hello World."
+```
 
 logs an entry
 
-	1/28 02:49:29 PM : Hello World.
-	
+```
+1/28 02:49:29 PM : Hello World.
+```
+
 in the logfile, which is described by the global variable `LOGFILE`.
 	
 #### `slog()`
