@@ -109,11 +109,6 @@ A command line to remove extra attributes, which can be seen using `ls -l@`. Som
 	rmtags.sh FILES
 
 
-rtun.sh
--------
-Reverse tunnel creation through NWC's Bastian host. I almost don't want to document this. Don't use this directly. Read it, understand it and modify it for your own usage.
-
-
 tconfig.sh
 ----------
 A collection of SSH tunnel set up parameters for pulling reverse tunnel connections that have been established through starbuck.nwc.ou.edu or any servers.
@@ -188,15 +183,21 @@ logs an entry with short timestamp. This is aimed for log files that are named b
 
 ##### Syntax:
 
-	slog MESSAGE
+```
+slog MESSAGE
+```
 
 ##### Example:
 
-	slog "All done."
-	
+```
+slog "All done."
+```
+
 logs an entry
 
-	02:49 : All done.
+```
+02:49 : All done.
+```
 
 in the logfile.
 	
@@ -205,13 +206,17 @@ frees up space or limits the usage until the targeted number is achieved.
 
 ##### Syntax:
 
-	file_manager MODE FOLDER SIZE
+```
+file_manager MODE FOLDER SIZE
+```
 
 ##### Examples:
 
-	file_manager LIMIT ${HOME}/figs 1024*1024*1024
-	file_manager FREE ${HOME}/data 1024*1024*1024
-	
+```
+file_manager LIMIT ${HOME}/figs 1024*1024*1024
+file_manager FREE ${HOME}/data 1024*1024*1024
+```
+
 where the first line limits usage of the folder to 1 GB; while the second line ensures the free space of the partition where the folder belongs to is at least 1 GB.
 	
 #### `remove_files_but_keep()`
@@ -219,12 +224,16 @@ removes all files in a folder but keep the last specified number of files.
 
 ##### Syntax:
 
-	remove_files_but_keep FOLDER COUNT PATTERN
+```
+remove_files_but_keep FOLDER COUNT PATTERN
+```
 
 ##### Example:
 
-	remove_files_but_keep "${HOME}/logs/drive_clean" 30 '*.log'
-	
+```
+remove_files_but_keep "${HOME}/logs/drive_clean" 30 '*.log'
+```
+
 removes all files under the subfolder logs/drive_clean under home folder, which that match the file pattern that ends with "log" but keep the last 30.
 
 	
@@ -233,14 +242,17 @@ removes all sub-folders in a folder but keep the specified number of sub-folders
 
 ##### Syntax:
 
-	remove_folders_but_keep FOLDER COUNT [PATTERN]
-	
+```
+remove_folders_but_keep FOLDER COUNT [PATTERN]
+```
+
 where the file pattern is assumed to be * if not supplied.
 	
 ##### Example:
 
-	remove_folders_but_keep "${HOME}/data" 5 '20[0-9][0-9]*'
-
+```
+remove_folders_but_keep "${HOME}/data" 5 '20[0-9][0-9]*'
+```
 removes all sub-folders that match the naming pattern begins with 2000 - 2099 but keep the last 5.
 
 #### `remove_minutes_old_files()`
@@ -249,14 +261,18 @@ removes files older than the specified age in minutes.
 
 ##### Syntax:
 
-	remove_minutes_old_files FOLDER COUNT [PATTERN]
-	
+```
+remove_minutes_old_files FOLDER COUNT [PATTERN]
+```
+
 where the file pattern is assumed to be anything if not supplied.
 
 ##### Example:
 
-	remove_minutes_old_files "${HOME}/px1000" 720 'PX*.tgz'
-	
+```
+remove_minutes_old_files "${HOME}/px1000" 720 'PX*.tgz'
+```
+
 removes all files (up to level-2 deep) that are older than 720 minutes and satisfy the name pattern which begins with "PX" and ends with "tgz".
 
 
@@ -265,12 +281,16 @@ removes empty folders
 
 ##### Syntax:
 
-	remove_empty_folders FOLDER
+```
+remove_empty_folders FOLDER
+```
 
 ##### Example:
 
-	remove_empty_folders "${HOME}/data"
-	
+```
+remove_empty_folders "${HOME}/data"
+```
+
 removes all sub-folders that are empty. Note that hidden files that begin with ".", e.g., ".DS_Store", can prevent this function from removing the folders.
 
 
@@ -279,16 +299,22 @@ produces a message if the partition (of where the folder belongs to) is less tha
 
 ##### Syntax:
 
-	warn_if_low FOLDER SIZE
+```
+warn_if_low FOLDER SIZE
+```
 
 ##### Example:
 
-	warn_if_low "${HOME}/data" 5*1024*1024*1024
-	
+```
+warn_if_low "${HOME}/data" 5*1024*1024*1024
+```
+
 produces a message
 
-	Available: 4.9 GB < 5 GB
-	
+```
+Available: 4.9 GB < 5 GB
+```
+
 when the remaining space is 4.9 GB, which is less than the specified test size. Otherwise, nothing happens. This can be used in a script and scheduled as a cron job to notify the admin when the free space is too little.
 
 
@@ -297,15 +323,19 @@ checks for processes using ps and grep
 
 ##### Syntax:
 
-	check_process PROCESS_1 PROCESS_2 PROCESS_3 ...
+```
+check_process PROCESS_1 PROCESS_2 PROCESS_3 ...
+```
 
 ##### Example:
 
-	check_process rpcd rcc lcc trxd trigd
+```
+check_process rpcd rcc lcc trxd trigd
+```
 
 produces output
 
-```shell
+```
 Processes                                                                     |
 =========                                                                     |
 RUSER      PID STAT %CPU %MEM NLWP COMMAND                                    |
@@ -319,15 +349,19 @@ prints out the piped-in text with color and title
 
 ##### Syntax:
 
-	textout TITLE [COLOR]
+```
+textout TITLE [COLOR]
+```
 
 ##### Example:
 
-	tail -n 5 ${LOG} | textout RCC green
+```
+tail -n 5 ${LOG} | textout RCC green
+```
 
 produces output
 
-```shell
+```
 RCC                                                                           |
 ===                                                                           |
 12:24:39 : [RCC]       00 <Kate>: 108-'l' (1)                                 |
@@ -341,15 +375,19 @@ shows the head and tail portions of a file list of a folder
 
 ##### Syntax:
 
-	headtail FOLDER [COLOR]
+```
+headtail FOLDER [COLOR]
+```
 
 ##### Example:
 
-	headtail ~/Downloads
-	
+```
+headtail ~/Downloads
+```
+
 produces
 
-```shell
+```
 /Users/boonleng/Downloads (      16 --> 59G)                                  |
 ============================================                                  |
 drwx------    3 boonleng  staff   102B Apr 16  2014 About Downloads.lpdf      |
@@ -366,43 +404,55 @@ removes files in a folder that are older than a specified age in minutes and mat
 
 ##### Syntax:
 
-    remove_minutes_old_files DIR MINUTES [PATTERN]
-    
+```
+remove_minutes_old_files DIR MINUTES [PATTERN]
+```
+
 where PATTERN is assumed to be `*.tgz` if not supplied.
 
 ##### Example:
 
-    remove_minutes_old_files /home/ldm/data 86400 *.nc
-    
+```
+remove_minutes_old_files /home/ldm/data 86400 *.nc
+```
+
 #### `mount_host()`
 mount the host using SSHFS
 
 ##### Syntax:
 
-    mount_host HOST_NAME
+```
+mount_host HOST_NAME
+```
 
 ##### Examples:
 
-    mount_host anastasia
-    mount_host cerulean.local
-    mount_host 10.203.6.227
+```
+mount_host anastasia
+mount_host cerulean.local
+mount_host 10.203.6.227
+```
 
 #### `check_path()`
 checks if the path exist
 
 ##### Syntax:
 
-    check_path PATH
+```
+check_path PATH
+```
 
 ##### Example:
 
-    check_path /Volumes/Data
+```
+check_path /Volumes/Data
+```
 
 #### `remove_old_logs()`
 
 remove old log files that are in the patterns of:
 
-```shell
+```
 cleanup-20171124.log
 cleanup-20171125.log
 cleanup-20171126.log
@@ -415,10 +465,14 @@ stitch-figure-20171126.log
 
 ##### Syntax:
 
-    remove_old_logs LOG_PATH [FILES_TO_KEEP]
-    
+```
+remove_old_logs LOG_PATH [FILES_TO_KEEP]
+```
+
 where FILES_TO_KEEP is assumed to be 7 if not supplied.
 
 ##### Example:
 
-    remove_old_logs ${HOME}/logs 30
+```
+remove_old_logs ${HOME}/logs 30
+```
