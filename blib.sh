@@ -378,8 +378,8 @@ function check_process() {
 	arg="\($1"
 	for ((i=2;i<=$#;i++)); do
 		cmd="c=\${${i}}"
-		eval $cmd
-		arg="$arg\|$c"
+		eval ${cmd}
+		arg="${arg}\|${c}"
 	done
 	arg="${arg}\)"
 	#echo "$arg"
@@ -387,10 +387,9 @@ function check_process() {
 	if [ `uname` == "Darwin" ]; then
 		keywords="ruser,pid,stat,pcpu,pmem,command";
 	else
-		keywords="ruser,pid,stat,pcpu,pmem,etime,nlwp,cmd";
+		keywords="ruser,pid,stat,nlwp,pcpu:6,pmem:6,etime:12,time:12,comm";
 	fi
-	ps ax -o $keywords | head -1
-	ps ax -o $keywords | grep -e "$USER" | grep -e "$arg" | grep -v "\(grep\|tail\|ssh\|bin/su\)"
+	ps -u ${USER} -o ${keywords} | grep -e "\(${arg}\|RUSER\)" | grep -v "\(grep\|tail\|ssh\|bin/su\)"
 }
 
 
