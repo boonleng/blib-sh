@@ -2,11 +2,11 @@
 
 ##########################################################
 #
-#  BOONLIB - Boonleng's library
+#  BLIB - Boonleng's library
 #  This is a collection of shell script functions for
 #  various tasks. Tasks that I frequently do.
 #
-#  Copyright (c) 2009-2015 Boon Leng Cheong
+#  Copyright (c) 2009-2019 Boonleng Cheong
 #  Advanced Radar Research Center
 #  The University of Oklahoma
 #
@@ -533,7 +533,7 @@ function mount_host() {
 		echo -e "\033[38;5;82mbrew install sshfs\033[0m"
 		exit
 	fi
-	sshfs ${target}:/ /Volumes/${target} -o idmap=user,allow_other,auto_cache,reconnect,follow_symlinks,volname=${volname}
+	sshfs ${target}:/ /Volumes/${target} -o idmap=user,allow_other,auto_cache,reconnect,volname=${volname}
 }
 
 ##########################################################
