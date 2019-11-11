@@ -29,7 +29,7 @@ p2_size_orig=$(echo ${sfd0} | grep -Po "\/dev\/${src_base}2 : start= [0-9]*, siz
 p2_size_new=$((total_size - p2_start_new))
 sfd1=$(echo "${sfd1}" | sed -e "s/${p2_size_orig}/${p2_size_new}/")
 
-sfd1=$(echo "${sfd1}" | sed -e "s/${src_base}/${dst_base}/g")
+#sfd1=$(echo "${sfd1}" | sed -e "s/${src_dev}/${dst_dev}/g")
 
 echo "${sfd1}"
 
@@ -50,11 +50,17 @@ mkfs -t ext4 -L ${label} /dev/${dst_base}2
 
 rsync_options="--force -rltWDEHXAgoptx"
 
+rm -rf /mnt/clone
+
+mkdir -p /mnt/clone
+
 mount /dev/${dst_base}2 /mnt/clone
 
-rsync $rsync_options --delete $exclude_useropt --exclude '.gvfs' --exclude '/dev/*' --exclude '/mnt/clone/*' --exclude '/proc/*' --exclude '/run/*' --exclude '/sys/*' --exclude '/tmp/*' // /mnt/clone
+mkdir -p /mnt/clone/boot
 
 mount /dev/${dst_base}1 /mnt/clone/boot
+
+rsync $rsync_options --delete $exclude_useropt --exclude '.gvfs' --exclude '/dev/*' --exclude '/mnt/clone/*' --exclude '/proc/*' --exclude '/run/*' --exclude '/sys/*' --exclude '/tmp/*' // /mnt/clone
 
 rsync $rsync_options --delete $exclude_useropt --exclude '.gvfs' --exclude 'lost\+found/*' /boot/ /mnt/clone/boot
 
