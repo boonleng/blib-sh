@@ -2,10 +2,14 @@
 
 name=$1
 if [ -z ${name} ]; then
-	name="anastasia"
+	name="midnight"
 fi
 
 case $name in
+	"midnight" )
+		mac="00:08:9b:f6:b6:61"
+		ip="192.168.1.255"
+		;;
 	"mediapc" )
 		mac="6c:62:6d:08:cc:f9"
 		ip="192.168.1.255"
