@@ -434,6 +434,8 @@ function textout() {
 			skyblue)    c="38;5;117";;
 			seagreen)   c="38;5;85";;
 			steelblue)  c="38;5;81";;
+			lime)       c="38;5;118";;
+            flash)      c="38;5;190";;
 			*)          c=$2;;
 		esac
 		echo -ne "\033[${c}m"
@@ -476,6 +478,46 @@ function headtail() {
 	tput sgr0
 }
 
+
+##########################################################
+#
+#  s h o w _ l o g _ b y _ l a t e s t _ l i n e _ c o u n t
+#
+#     shows the latest log (alphabetically sorted) file using tail with a title
+#
+#       o	show_log_by_latest_line_count PREFIX COUNT [COLOR]
+#
+##########################################################
+function show_log_by_latest_line_count() {
+    prefix=${1}
+    count=${2}
+    color=${3}
+    logfile=$(find -H ${folder} -name "${prefix}*.log" | sort | tail -n 1)
+    if [ ! -z ${logfile} ]; then
+        tail -n ${count} ${logfile} | sed 's/\x1b\[[0-9;]*m//g' | textout "Log = ${logfile}" ${color}
+    fi
+}
+
+
+##########################################################
+#
+#  s h o w _ l o g _ b y _ c o n t e n t _ p a t t e r n
+#
+#     shows the latest log (alphabetically sorted) file with a matched pattern
+#
+#       o	show_log_by_content_pattern PREFIX PATTERN [COLOR]
+#
+##########################################################
+function show_log_by_content_pattern() {
+    prefix=${1}
+    search=${2}
+    color=${3}
+    logfile=$(find -H ${folder} -name "${prefix}*.log" | sort | tail -n 1)
+    if [ ! -z ${logfile} ]; then
+        count=$(grep -n "${search}" ${logfile} | tail -n 1); count=${count%%:*}
+        tail -n +${count} ${logfile} | textout "Log = ${logfile}" ${color}
+    fi
+}
 
 ##########################################################
 #

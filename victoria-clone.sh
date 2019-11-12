@@ -32,7 +32,8 @@ fi
 
 sfd0=$(sfdisk -d /dev/${src_dev})
 
-echo "size1 = ${size1}   total_size = ${total_size}"
+log "Targeted sizes:"
+echo "size1 = ${size1} ($((size1 / 2048)) MB)   total_size = ${total_size} ($((total_size / 2048)) MB)"
 echo ""
 echo -e "\033[38;5;211mSource partition scheme\033[m"
 echo "${sfd0}"
@@ -79,7 +80,7 @@ total_size=$((total * 512 / 1024 / 1024))
 echo ""
 echo "Last block = $((total - 1))  Total size = ${total_size} MB"
 
-echo "Proceed ? [y/n]"
+echo -n "Proceed ? [y/n] "
 read resp
 resp=$(echo "${resp}" | tr '[:upper:]' '[:lower:]')
 if [ "${resp}" != "y" ] && [ "${resp}" != "yes" ]; then
@@ -148,22 +149,26 @@ fstab=$(cat /mnt/clone/etc/fstab)
 echo -e "\n\033[38;5;211mOriginal fstab\033[m"
 echo "${fstab}"
 
-for p in 1 2; do
-	src_uuid=$(lsblk -n -o PARTUUID /dev/${src_base}${p})
-	dst_uuid=$(lsblk -n -o PARTUUID /dev/${dst_base}${p})
-	log "p = ${p}   src = ${src_uuid}   dst = ${dst_uuid}"
-	cmdline=$(echo "${cmdline}" | sed -e "s/${src_uuid}/${dst_uuid}/g")
-	fstab=$(echo "${fstab}" | sed -e "s/${src_uuid}/${dst_uuid}/g")
-done
+first_uuid=$(lsblk -n -o PARTUUID /dev/${src_base}1)
+if [ -z "${first_uuid}" ]; then
+	log 214 "Unable to find partition UUID, skip modifying cmdline.txt and fstab"
+else
+	for p in 1 2; do
+		src_uuid=$(lsblk -n -o PARTUUID /dev/${src_base}${p})
+		dst_uuid=$(lsblk -n -o PARTUUID /dev/${dst_base}${p})
+		log "p = ${p}   src = ${src_uuid}   dst = ${dst_uuid}"
+		cmdline=$(echo "${cmdline}" | sed -e "s/${src_uuid}/${dst_uuid}/g")
+		fstab=$(echo "${fstab}" | sed -e "s/${src_uuid}/${dst_uuid}/g")
+	done
 
-echo -e "\n\033[38;5;82mNew cmdline.txt\033[m"
-echo "${cmdline}"
-echo "${cmdline}" > /mnt/clone/boot/cmdline.txt
+	echo -e "\n\033[38;5;82mNew cmdline.txt\033[m"
+	echo "${cmdline}"
+	echo "${cmdline}" > /mnt/clone/boot/cmdline.txt
 
-echo -e "\n\033[38;5;82mNew fstab\033[m"
-echo "${fstab}"
-echo "${fstab}" > /mnt/clone/etc/fstab
-
+	echo -e "\n\033[38;5;82mNew fstab\033[m"
+	echo "${fstab}"
+	echo "${fstab}" > /mnt/clone/etc/fstab
+fi
 sync
 
 umount /mnt/clone/boot /mnt/clone
