@@ -151,7 +151,13 @@ echo "${fstab}"
 
 first_uuid=$(lsblk -n -o PARTUUID /dev/${src_base}1)
 if [ -z "${first_uuid}" ]; then
-	log 214 "Unable to find partition UUID, skip modifying cmdline.txt and fstab"
+	log 214 "Unable to find partition UUID, assigning one ..."
+	disk_id=$(od -A n -t x -N 4 /dev/urandom)
+	disk_id=${disk_id:1}
+	printf "x\ni\n0x${disk_id}\nr\nw\nq\n" | fdisk "/dev/${dst_dev}"
+	sync
+	sleep 1
+	partprobe "/dev/${dst_dev}"
 else
 	for p in 1 2; do
 		src_uuid=$(lsblk -n -o PARTUUID /dev/${src_base}${p})
