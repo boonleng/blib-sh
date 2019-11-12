@@ -33,16 +33,16 @@ fi
 sfd0=$(sfdisk -d /dev/${src_dev})
 
 log "Targeted sizes:"
-echo "size1 = ${size1} ($((size1 / 2048)) MB)   total_size = ${total_size} ($((total_size / 2048)) MB)"
+echo "boot = ${size1} ($((size1 / 2048)) MB)   total_size = ${total_size} ($((total_size / 2048)) MB)"
 echo ""
-echo -e "\033[38;5;211mSource partition scheme\033[m"
+log 211 "Source partition scheme:"
 echo "${sfd0}"
 
 sfd1=$(echo "${sfd0}" | sed -e "\/dev\/${src_base}2/s/start=[^,]*/start= P2_START/" -e "\/dev\/${src_base}2/s/size=[^,]*/size= P2_SIZE/")
 
 if [ "${debug}" == "true" ]; then
 	echo ""
-	echo -e "\033[38;5;215mMutating ...\033[m"
+	log 215 "Mutating ..."
 	echo "${sfd1}"
 	echo ""
 fi
@@ -71,14 +71,15 @@ sfd1=$(echo "${sfd1}" | sed -e "s/P2_SIZE/${p2_size}/")
 sfd1=$(echo "${sfd1}" | sed -e "s/${src_base}/${dst_base}/g")
 sfd1=$(echo "${sfd1}" | sed -e "s/${src_dev}/${dst_dev}/g")
 
-echo -e "\033[38;5;82m\nNew partition scheme\033[m"
+echo ""
+log 82 "New partition scheme:"
 echo "${sfd1}"
 
-total=$((p2_start + p2_size))
-total_size=$((total * 512 / 1024 / 1024))
+next_sector=$((p2_start + p2_size))
+actual_total_size=$((next_sector / 2048))
 
 echo ""
-echo "Last block = $((total - 1))  Total size = ${total_size} MB"
+log "Last block = $((next_sector - 1))   Total size = ${actual_total_size} MB"
 
 echo -n "Proceed ? [y/n] "
 read resp
@@ -101,7 +102,7 @@ log "Applying new partition scheme ..."
 sfdisk --force /dev/${dst_base} > /dev/null <<< "${sfd1}"
 sync
 
-yes | mkfs -t vfat -F 32 -n ${label} /dev/${dst_base}1
+yes | mkfs -t vfat -F 32 -n $(echo "${label}" | tr '[:lower:]' '[:upper:]') /dev/${dst_base}1
 yes | mkfs -t ext4 -L ${label} /dev/${dst_base}2
 
 sync
@@ -142,11 +143,12 @@ sync
 df -h
 
 cmdline=$(cat /mnt/clone/boot/cmdline.txt)
-echo -e "\n\033[38;5;211mOriginal cmdline.txt\033[m"
-echo "${cmdline}"
-
 fstab=$(cat /mnt/clone/etc/fstab)
-echo -e "\n\033[38;5;211mOriginal fstab\033[m"
+echo ""
+log 211 "Original cmdline.txt"
+echo "${cmdline}"
+echo ""
+log 211 "Original fstab:"
 echo "${fstab}"
 
 first_uuid=$(lsblk -n -o PARTUUID /dev/${src_base}1)
@@ -158,23 +160,28 @@ if [ -z "${first_uuid}" ]; then
 	sync
 	sleep 1
 	partprobe "/dev/${dst_dev}"
-else
-	for p in 1 2; do
-		src_uuid=$(lsblk -n -o PARTUUID /dev/${src_base}${p})
-		dst_uuid=$(lsblk -n -o PARTUUID /dev/${dst_base}${p})
-		log "p = ${p}   src = ${src_uuid}   dst = ${dst_uuid}"
-		cmdline=$(echo "${cmdline}" | sed -e "s/${src_uuid}/${dst_uuid}/g")
-		fstab=$(echo "${fstab}" | sed -e "s/${src_uuid}/${dst_uuid}/g")
-	done
-
-	echo -e "\n\033[38;5;82mNew cmdline.txt\033[m"
-	echo "${cmdline}"
-	echo "${cmdline}" > /mnt/clone/boot/cmdline.txt
-
-	echo -e "\n\033[38;5;82mNew fstab\033[m"
-	echo "${fstab}"
-	echo "${fstab}" > /mnt/clone/etc/fstab
 fi
+
+for p in 1 2; do
+	src_uuid=$(lsblk -n -o PARTUUID /dev/${src_base}${p})
+	dst_uuid=$(lsblk -n -o PARTUUID /dev/${dst_base}${p})
+	if [ "${debug}" == "true" ]; then
+		log "p = ${p}   src = ${src_uuid}   dst = ${dst_uuid}"
+	fi
+	cmdline=$(echo "${cmdline}" | sed -e "s/${src_uuid}/${dst_uuid}/g")
+	fstab=$(echo "${fstab}" | sed -e "s/${src_uuid}/${dst_uuid}/g")
+done
+
+echo ""
+log 82 "New cmdline.txt:"
+echo "${cmdline}"
+echo ""
+log 82 "New fstab"
+echo "${fstab}"
+
+echo "${cmdline}" > /mnt/clone/boot/cmdline.txt
+echo "${fstab}" > /mnt/clone/etc/fstab
+
 sync
 
 umount /mnt/clone/boot /mnt/clone
