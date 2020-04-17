@@ -81,7 +81,7 @@ fi
 cocomo "${totalLines}" "${annualSalary}"
 
 echo ""
-echo "Copyright (c) 2018 Boonleng Cheong"
+echo "Copyright (c) 2018-$(date +%Y) Boonleng Cheong"
 echo "Based on COCOMO (organic, https://en.wikipedia.org/wiki/COCOMO)"
 echo "Outoupt generated to match the original sloccount tool by David A. Wheeler"
 echo "This script comes with ABSOLUTELY NO WARRANTY. You are welcome to redistribute"

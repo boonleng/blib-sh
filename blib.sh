@@ -6,7 +6,7 @@
 #  This is a collection of shell script functions for
 #  various tasks. Tasks that I frequently do.
 #
-#  Copyright (c) 2009-2019 Boonleng Cheong
+#  Copyright (c) 2009-2020 Boonleng Cheong
 #  Advanced Radar Research Center
 #  The University of Oklahoma
 #
