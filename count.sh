@@ -57,9 +57,8 @@ done
 
 LC_NUMERIC=en_US
 
-if ! command -v cloc &> /dev/null
-then
-    echo "Program 'cloc' could not be found"
+if ! hash cloc 2>/dev/null; then
+    echo "Program 'cloc' is not installed."
     exit
 fi
 
