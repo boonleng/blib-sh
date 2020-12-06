@@ -57,6 +57,12 @@ done
 
 LC_NUMERIC=en_US
 
+if ! command -v cloc &> /dev/null
+then
+    echo "Program 'cloc' could not be found"
+    exit
+fi
+
 kk=0
 lines=()
 while IFS= read line; do
