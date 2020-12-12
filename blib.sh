@@ -386,10 +386,11 @@ function check_process() {
 	#ps x -u $USER -o pid,stat,cmd | grep -e "$arg" | grep -v "\(grep\|tail\|ssh\|bin/su\)"
 	if [ `uname` == "Darwin" ]; then
 		keywords="ruser,pid,stat,pcpu,pmem,command";
+		ps -u ${USER} -o ${keywords} | grep -e "\(${arg}\|RUSER\)" | grep -v "\(grep\|tail\|ssh\|bin/su\)"
 	else
 		keywords="ruser,pid,stat,nlwp,pcpu:6,pmem:6,etime:12,time:12,comm";
+		ps -u${USER} kcomm o${keywords} | grep -e "\(${arg}\|RUSER\)" | grep -v "\(grep\|tail\|ssh\|bin/su\)"
 	fi
-	ps -u ${USER} -o ${keywords} | grep -e "\(${arg}\|RUSER\)" | grep -v "\(grep\|tail\|ssh\|bin/su\)"
 }
 
 
