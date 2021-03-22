@@ -423,35 +423,48 @@ function fecho() {
 function textout() {
 	if [ "${#}" -ge 2 ]; then
 		case "$2" in
-			red)        c=31;;
-			green)      c=32;;
-			yellow)     c=33;;
-			blue)       c=34;;
-			magenta)    c=35;;
-			cyan)       c=36;;
-			white)      c=37;;
-			gold)       c="38;5;220";;
-			lavender)   c="38;5;141";;
-			skyblue)    c="38;5;117";;
-			seagreen)   c="38;5;85";;
-			steelblue)  c="38;5;81";;
-			lime)       c="38;5;118";;
-            flash)      c="38;5;190";;
-			*)          c=$2;;
+			red)        c=9;;
+			green)      c=10;;
+			yellow)     c=11;;
+			blue)       c=12;;
+			magenta)    c=13;;
+			cyan)       c=14;;
+			white)      c=15;;
+			gold)       c=220;;
+			lavender)   c=141;;
+			skyblue)    c=117;;
+			seagreen)   c=85;;
+			steelblue)  c=81;;
+			lime)       c=118;;
+            flash)      c=190;;
+			*)          c=${2};;
 		esac
-		echo -ne "\033[${c}m"
 	fi
 	len=${#1}
 	if [ "$#" -ge 1 ]; then
-		LINE="======================================================="
-		fecho "${1}"
-		fecho "${LINE:0:$len}"
+		if [ "${#c}" -gt 3 ]; then
+			p="\e[${c}m"
+			q="\e[${c}m"
+			r="\e[${c}m"
+		else
+			p="\e[38;5;0;48;5;${c}m"
+			q="\e[38;5;${c}m"
+			r="\e[1;4;38;5;${c}m"
+		fi
+		# printf "%b%s%b%b%-$((SCREEN_WIDTH-len))s|\n" "${p}" "${1}" "\e[0m" "${q}" " "
+		printf "%b%s%b%b%-$((SCREEN_WIDTH-len))s|\n" "${r}" "${1}" "\e[m" "${q}" " "
+	fi
+	echo -ne "\033[m"
+	if [ "${#c}" -gt 3 ]; then
+		echo -ne "\033[${c}m"
+	else
+		echo -ne "\033[38;5;${c}m"
 	fi
 	cat - | while read line; do
 		fecho "${line}"
 	done
 	if [ "${#}" -ge 2 ]; then
-		echo -ne "\033[0m"
+		echo -ne "\033[m"
 	fi
 }
 
