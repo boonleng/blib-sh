@@ -643,7 +643,6 @@ function remove_old_logs() {
 	fi
 	prefixes=()
 	for file in ${logPath}/*.log; do
-		file=${file%.log}
 		file=${file##*/}
 		file=${file%%-*}
 		prefixes+=(${file}-)
