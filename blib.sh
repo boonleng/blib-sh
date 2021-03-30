@@ -646,7 +646,7 @@ function remove_old_logs() {
 		file=${file%.log}
 		file=${file##*/}
 		file=${file%%-*}
-		prefixes+=(${file})
+		prefixes+=(${file}-)
 	done
 	while read prefix; do
 		if [ ${VERBOSE} -gt 1 ]; then
