@@ -404,7 +404,7 @@ function check_process() {
 #
 ##########################################################
 function fecho() {
-	str="$@"
+	str=$(echo "$@" | sed -E $'s|\x1b\\[[0-9;]*m||g')
 	str="${str:0:${SCREEN_WIDTH}}"
 	printf "%-${SCREEN_WIDTH}s|\n" "$str"
 }
@@ -441,7 +441,6 @@ function textout() {
 		esac
 	fi
 	text=$(echo ${1} | sed -E $'s|\x1b\\[[0-9;]*m||g')
-	#len=${#1}
     len=${#text}
 	if [ "$#" -ge 1 ]; then
 		if [ "${#c}" -gt 3 ]; then
@@ -453,8 +452,7 @@ function textout() {
 			q="\e[38;5;${c}m"
 			r="\e[1;4;38;5;${c}m"
 		fi
-		# printf "%b%s%b%b%-$((SCREEN_WIDTH-len))s|\n" "${p}" "${1}" "\e[0m" "${q}" " "
-		printf "%b%s%b%b%-$((SCREEN_WIDTH-len))s|\n" "${r}" "${1}" "\e[m" "${q}" " "
+		printf "%b%s%b%b%-$((SCREEN_WIDTH-len))s|\n" "${r}" "${text}" "\e[m" "${q}" " "
 	fi
 	echo -ne "\033[m"
 	if [ "${#c}" -gt 3 ]; then
