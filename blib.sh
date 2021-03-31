@@ -440,7 +440,9 @@ function textout() {
 			*)          c=${2};;
 		esac
 	fi
-	len=${#1}
+	text=$(echo ${1} | sed -E $'s|\x1b\\[[0-9;]*m||g')
+	#len=${#1}
+    len=${#text}
 	if [ "$#" -ge 1 ]; then
 		if [ "${#c}" -gt 3 ]; then
 			p="\e[${c}m"
@@ -503,13 +505,14 @@ function headtail() {
 #
 ##########################################################
 function show_log_by_latest_line_count() {
-    prefix=${1}
-    count=${2}
-    color=${3}
-    logfile=$(find -H ${folder} -name "${prefix}*.log" | sort | tail -n 1)
-    if [ ! -z ${logfile} ]; then
-        tail -n ${count} ${logfile} | sed 's/\x1b\[[0-9;]*m//g' | textout "Log = ${logfile}" ${color}
-    fi
+	prefix=${1}
+	count=${2}
+	color=${3}
+	logfile=$(find -H ${folder} -name "${prefix}*.log" | sort | tail -n 1)
+	if [ ! -z ${logfile} ]; then
+		tail -n ${count} ${logfile} | sed 's/\x1b\[[0-9;]*m//g' | textout "Log = ${logfile}" ${color}
+		echo
+	fi
 }
 
 
@@ -523,15 +526,16 @@ function show_log_by_latest_line_count() {
 #
 ##########################################################
 function show_log_by_content_pattern() {
-    prefix=${1}
-    search=${2}
-    color=${3}
-    logfile=$(find -H ${folder} -name "${prefix}*.log" | sort | tail -n 1)
-    if [ ! -z ${logfile} ]; then
-        count=$(grep -n "${search}" ${logfile} | tail -n 1); count=${count%%:*}
-        tail -n +${count} ${logfile} | textout "Log = ${logfile}" ${color}
-    fi
+	prefix=${1}
+	search=${2}
+	color=${3}
+	logfile=$(find -H ${folder} -name "${prefix}*.log" | sort | tail -n 1)
+	if [ ! -z ${logfile} ]; then
+		count=$(grep -n "${search}" ${logfile} | tail -n 1); count=${count%%:*}
+		tail -n +${count} ${logfile} | textout "Log = ${logfile}" ${color}
+	fi
 }
+
 
 ##########################################################
 #
@@ -655,33 +659,5 @@ function remove_old_logs() {
 		remove_files_but_keep ${logPath} ${filesToKeep} ${prefix}'*'
 		set +f
 	done < <(echo ${prefixes[@]} | tr ' ' '\n' | sort -u)
-}
-
-##########################################################
-#  s h o w _ l o g _ b y _ l a t e s t _ l i n e _ c o u n t
-##########################################################
-function show_log_by_latest_line_count() {
-	prefix=${1}
-	count=${2}
-	color=${3}
-	logfile=$(find -H ${folder} -name "${prefix}*.log" | sort | tail -n 1)
-	if [ ! -z ${logfile} ]; then
-		tail -n ${count} ${logfile} | sed 's/\x1b\[[0-9;]*m//g' | textout "Log = ${logfile}" ${color}
-		echo
-	fi
-}
-
-##########################################################
-#  s h o w _ l o g _ b y _ c o n t e n t _ p a t t e r n
-##########################################################
-function show_log_by_content_pattern() {
-	prefix=${1}
-	search=${2}
-	color=${3}
-	logfile=$(find -H ${folder} -name "${prefix}*.log" | sort | tail -n 1)
-	if [ ! -z ${logfile} ]; then
-		count=$(grep -n "${search}" ${logfile} | tail -n 1); count=${count%%:*}
-		tail -n +${count} ${logfile} | textout "Log = ${logfile}" ${color}
-	fi
 }
 
