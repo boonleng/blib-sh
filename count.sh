@@ -5,7 +5,7 @@ function cocomo() {
     totalLines="$1"
     annualSalary="$2"
     if [ -z "$2" ]; then
-        annualSalary="56268"
+        annualSalary="80000"
     fi
     annualSalaryString=$(printf "%'.f\n" ${annualSalary})
     # COCOMO
@@ -37,9 +37,17 @@ while true ; do
             annualSalary="$2"
             shift
             ;;
+        -h|--high-salary)
+            # Glassdoor $58k-110k per year ($80,370/yr)
+            annualSalary="110000"
+            shift
+            ;;
         -m|--modern-salary)
-            # Retrieve from Google: average salary of computer programmers from 2016 is $85,180
-            annualSalary="85180"
+            # Entry Level Software Developer Oklahoma City $82,453
+            # Java Developer Oklahoma City $83,330
+            # Junior Software Developer Oklahoma City $56,329
+            # Software Developer Fresher Oklahoma City $77,500
+            annualSalary="80000"
             shift
             ;;
         -h|--help)
@@ -79,8 +87,8 @@ if [ ! -z "${annualSalary}" ]; then
     echo "Using Custom Salary:"
     echo "--------------------"
 else
-    echo "Using Salary from 2014:"
-    echo "-----------------------"
+    echo "Using Normal Annual Salary:"
+    echo "---------------------------"
 fi
 
 cocomo "${totalLines}" "${annualSalary}"
