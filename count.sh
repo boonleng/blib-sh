@@ -78,7 +78,7 @@ while IFS= read line; do
         totalLines=${line##* }
     fi
     kk=$((kk+1))
-done < <(cloc --exclude-dir=data --exclude-dir=lib --quiet --include-ext=c,f,h,m,am,md,py,sh,ipynb .)
+done < <(cloc --exclude-dir=data --exclude-dir=lib --quiet --include-ext=c,f,h,m,am,cl,md,py,sh,fsh,ipynb,fshader,gnumakefile .)
 
 printf "%s\n" "${lines[@]}"
 echo ""
