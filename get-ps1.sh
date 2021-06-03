@@ -5,9 +5,11 @@ VERBOSE=0
 COLORS="
 tiffany 51 33 121 226
 cornflower 69 33 160 15
+bumblebee 220
 rwv01 204
 rdv01 154
 dcv01 45
+dwv05 213
 "
 
 function get_params() {
@@ -19,7 +21,7 @@ function get_params() {
 params=$(get_params)
 if [ -z "${params}" ]; then
 	echo "Machine ${HOSTNAME} not in the list"
-	exit
+	echo ">>> "
 fi
 IFS=" " read name m x y z <<< ${params}
 if [ ${VERBOSE} -gt 0 ]; then
