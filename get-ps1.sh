@@ -5,6 +5,7 @@ VERBOSE=0
 COLORS="
 tiffany 51 33 121 226
 cornflower 69 33 160 15
+dawn 208 208 50 33
 bumblebee 220
 rwv01 204
 rdv01 154
