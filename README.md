@@ -109,6 +109,11 @@ A command line to remove extra attributes, which can be seen using `ls -l@`. Som
 	rmtags.sh FILES
 
 
+speedtest.sh
+---
+A shell script wrapper to retrieve internet speed test
+
+
 tconfig.sh
 ----------
 A collection of SSH tunnel set up parameters for pulling reverse tunnel connections that have been established through starbuck.nwc.ou.edu or any servers.
