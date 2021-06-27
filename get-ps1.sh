@@ -5,12 +5,10 @@ VERBOSE=0
 COLORS="
 tiffany 51 33 121 226
 cornflower 69 33 160 15
-dawn 208 208 50 33
-bumblebee 220
 rwv01 204
 rdv01 154
 dcv01 45
-dwv05 213
+bumblebee 220
 "
 
 function get_params() {
@@ -22,7 +20,7 @@ function get_params() {
 params=$(get_params)
 if [ -z "${params}" ]; then
 	echo "Machine ${HOSTNAME} not in the list"
-	echo ">>> "
+	exit
 fi
 IFS=" " read name m x y z <<< ${params}
 if [ ${VERBOSE} -gt 0 ]; then
@@ -34,14 +32,20 @@ if [[ -z "${1}" ]]; then
 	if [[ ${USER} == "root" ]]; then
 		uu="\[\e[38;5;15;48;5;160m\] \u \[\e[m\]"
 	elif [[ ${USER} == "ldm" ]]; then
-		uu="\[\e[38;5;220m\]\u\[\e[m\]"
+		#uu="\[\e[38;5;220m\]\u\[\e[m"
+		uu="\[\e[38;5;220;48;5;237m\] \u \[\e[m\]"
 	else
 		uu="\[\e[38;5;15;48;5;237m\] \u \[\e[m\]"
 	fi
 	if [[ ! -z ${x} && ! -z ${y} && ! -z ${z} ]]; then
 		pp="\[\e[38;5;${x}m\]>\[\e[38;5;${y}m\]>\[\e[38;5;${z}m\]>\[\e[m\]"
 	else
-		pp="$"
+		gcc_ver=$(gcc --version | head -n 1)
+		if [[ ${gcc_ver} == *"Ubuntu"* ]]; then
+			pp="\[\e[38;5;202m\]$\[\e[m\]"
+		else
+			pp="\[\e[38;5;118m\]$\[\e[m\]"
+		fi
 	fi
 	if [ ${VERBOSE} -gt 0 ]; then
 		echo ${mm}
