@@ -20,7 +20,8 @@ function get_params() {
 
 params=$(get_params)
 if [ -z "${params}" ]; then
-	echo "Machine ${HOSTNAME} not in the list"
+	>&2 echo "Machine ${HOSTNAME} not in the list"
+	[ ! -z ${PS1} ] && echo "${PS1}" || echo "\u $ "
 	exit
 fi
 IFS=" " read name m x y z <<< ${params}
