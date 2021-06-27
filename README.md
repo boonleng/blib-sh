@@ -113,15 +113,19 @@ speedtest.sh
 ---
 A shell script wrapper to retrieve internet speed test
 
+#### Example Output:
 
-tconfig.sh
-----------
-A collection of SSH tunnel set up parameters for pulling reverse tunnel connections that have been established through starbuck.nwc.ou.edu or any servers.
+```shell
+speedtest.sh
 
+ping = 6.216 ms
+download = 1666.00 Mbps
+upload = 1505.66 Mbps
+```
 
 wake.sh
 -------
-Wake up a machine in LAN. This is a convenient function to wake up several computers by name. It may not work for you.
+Wake up a machine connected through LAN. This is a convenient function to wake up several computers by name. It may not work for you.
 
 #### Syntax:
 
